@@ -15,7 +15,7 @@ const Project = require("../../models/Project")
 
 router.get("/:slug/bugs", async (req, res) => {
     const project = await Project.find({ slug: req.params.slug })
-    const bugs = await Bug.find({ project: project[0]._id })
+    const bugs = await Bug.find({ project: project[0]._id }).sort("-date")
 
     bugs.length > 0
         ? res.json(bugs)
