@@ -10,7 +10,7 @@ config/default.json
 ### TODO - This list will be added to as I find more tasks to complete
 
 -   [ ] Authentication
--   [ ] Viewing bugs
+-   [ ] Viewing of bugs
 -   [ ] Bug comments
 -   [ ] Bug editing
 -   [ ] Project editing
