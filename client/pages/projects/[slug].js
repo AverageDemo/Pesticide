@@ -2,7 +2,7 @@ import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 import BugTable from "@/components/BugTable"
 
-export default function BugTestPage({ bugs, project }) {
+export default function ProjectPage({ bugs, project }) {
     return (
         <Layout breadcrumb={`${project.name} Bugs`}>
             {bugs.length === 0 && <h3>No bugs to display</h3>}

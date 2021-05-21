@@ -2,7 +2,7 @@ import Link from "next/link"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 
-export default function BugTestPage({ bug, projectObj }) {
+export default function BugPage({ bug, projectObj }) {
     return (
         <Layout
             breadcrumb={[
