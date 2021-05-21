@@ -6,3 +6,11 @@ config/default.json
     "jwtSecret": "secret"
 }
 ```
+
+### TODO - This list will be added to as I find more tasks to complete
+
+-   [ ] Authentication
+-   [ ] Viewing bugs
+-   [ ] Bug comments
+-   [ ] Bug editing
+-   [ ] Project editing
