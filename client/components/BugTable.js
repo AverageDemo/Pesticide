@@ -6,6 +6,13 @@ export default function BugTable({ bugArray, project }) {
         <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                    <div className="pb-3 text-right">
+                        <Link href={`/bugs/${project.slug}/new`}>
+                            <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                New Bug
+                            </button>
+                        </Link>
+                    </div>
                     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
