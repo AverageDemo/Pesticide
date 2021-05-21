@@ -67,15 +67,15 @@ router.post(
 
         try {
             const newProject = new Project({
-                project_name,
-                about,
+                name: project_name,
+                description: about,
                 slug: slugify(project_name),
             })
 
             await newProject.save()
             res.json(newProject)
         } catch (e) {
-            res.status(500).send("Server error")
+            res.status(500).json({ errors: "Server error" })
         }
     }
 )

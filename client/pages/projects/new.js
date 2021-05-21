@@ -28,6 +28,8 @@ export default function NewProjectPage() {
             return toast.error("Empty Fields")
         }
 
+        console.log(JSON.stringify(values))
+
         const res = await fetch(`${API}/projects/new`, {
             method: "POST",
             headers: {
@@ -37,7 +39,8 @@ export default function NewProjectPage() {
         })
 
         if (!res.ok) {
-            toast.error("Something went wrong")
+            console.log(res)
+            toast.error("Project with the same title already exists")
         } else {
             const project = await res.json()
             router.push(`/projects/${project.slug}`)
