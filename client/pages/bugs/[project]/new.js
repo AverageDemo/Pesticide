@@ -36,13 +36,9 @@ export default function NewBugPage({ projectObj }) {
             hasEmptyFields = true
         }
 
-        console.log(hasEmptyFields)
-
         if (hasEmptyFields) {
             return toast.error("Empty Fields")
         }
-
-        console.log(JSON.stringify(values))
 
         const res = await fetch(`${API}/bugs/new`, {
             method: "POST",
@@ -53,7 +49,6 @@ export default function NewBugPage({ projectObj }) {
         })
 
         if (!res.ok) {
-            console.log(res)
             toast.error("A bug with the same title already exists")
         } else {
             const bug = await res.json()

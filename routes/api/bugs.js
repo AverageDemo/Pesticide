@@ -49,7 +49,6 @@ router.post(
     check("bug_name").custom(async (value, { req }) => {
         const bug = await Bug.findOne({
             slug: slugify(value),
-            project: req.body.project,
         })
 
         if (bug) {
