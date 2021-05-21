@@ -64,12 +64,20 @@ export default function NewBugPage({ projectObj }) {
     return (
         <Layout
             breadcrumb={[
-                <Link href={`/projects/${projectObj.slug}`}>
-                    <a className="italic hover:text-indigo-900">
-                        {projectObj.name}
-                    </a>
+                <Link href="/">
+                    <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
-                " > New Bug",
+                <span className="text-gray-400"> / </span>,
+                <Link href="/projects">
+                    <a className="hover:text-gray-400">Projects</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+                <Link href={`/projects/${projectObj.slug}`}>
+                    <a className="hover:text-gray-400">{projectObj.name}</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+
+                <span className="text-gray-400">New Bug</span>,
             ]}
         >
             <ToastContainer />

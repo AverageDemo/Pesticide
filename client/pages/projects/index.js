@@ -1,10 +1,19 @@
+import Link from "next/link"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 import ProjectTable from "@/components/ProjectTable"
 
 export default function ProjectsPage({ projects }) {
     return (
-        <Layout breadcrumb="Projects">
+        <Layout
+            breadcrumb={[
+                <Link href="/">
+                    <a className="hover:text-gray-400">Dashboard</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+                <span className="text-gray-400">Projects</span>,
+            ]}
+        >
             {projects.length === 0 && <h3>No projects to display</h3>}
             <ProjectTable projectArray={projects} />
         </Layout>

@@ -51,7 +51,19 @@ export default function NewProjectPage() {
     }
 
     return (
-        <Layout breadcrumb="New Project">
+        <Layout
+            breadcrumb={[
+                <Link href="/">
+                    <a className="hover:text-gray-400">Dashboard</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+                <Link href="/projects">
+                    <a className="hover:text-gray-400">Projects</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+                <span className="text-gray-400">New Project</span>,
+            ]}
+        >
             <ToastContainer />
             <form onSubmit={handleSubmit}>
                 <div className="shadow sm:rounded-md sm:overflow-hidden">
