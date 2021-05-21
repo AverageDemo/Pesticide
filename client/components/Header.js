@@ -4,7 +4,6 @@ import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline"
 import { useRouter } from "next/router"
 
-const navigation = ["Dashboard", "Projects", "Assigned Bugs"]
 const profile = [
     "Your Profile",
     "Settings",
@@ -246,11 +245,8 @@ export default function Header({ breadcrumb }) {
                                 </div>
                                 <div className="mt-3 px-2 space-y-1">
                                     {profile.map((item) => (
-                                        <Link href="#">
-                                            <a
-                                                key={item}
-                                                className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
-                                            >
+                                        <Link href="#" key={item}>
+                                            <a className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">
                                                 {item}
                                             </a>
                                         </Link>

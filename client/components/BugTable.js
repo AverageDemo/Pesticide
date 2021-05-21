@@ -45,7 +45,7 @@ export default function BugTable({ bugArray, project }) {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {bugArray.length > 0 ? (
                                     bugArray.map((bug) => (
-                                        <tr>
+                                        <tr key={bug.name}>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
                                                     <div>

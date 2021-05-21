@@ -38,7 +38,7 @@ export default function ProjectTable({ projectArray }) {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {projectArray.map((project) => (
-                                    <tr>
+                                    <tr key={project.name}>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
                                                 <div>

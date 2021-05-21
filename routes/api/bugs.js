@@ -8,20 +8,6 @@ const Bug = require("../../models/Bug")
 const Project = require("../../models/Project")
 
 /*
- * @route   GET api/bugs/
- * @desc    Get all bugs
- * @access  Private
- */
-
-router.get("/", async (req, res) => {
-    const bugs = await Bug.find()
-
-    bugs.length > 0
-        ? res.json(bugs)
-        : res.status(404).json({ errors: "No bugs found" })
-})
-
-/*
  * @route   GET api/bugs/:slug
  * @desc    Get bugs for a project
  * @access  Private

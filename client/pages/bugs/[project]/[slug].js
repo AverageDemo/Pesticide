@@ -27,8 +27,6 @@ export async function getServerSideProps({ params: { slug, project } }) {
     const projectRes = await fetch(`${API}/projects/${project}`)
     const projectObj = await projectRes.json()
 
-    console.log(projectObj[0])
-
     return {
         props: { bug, projectObj: projectObj[0] },
     }
