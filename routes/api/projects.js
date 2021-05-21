@@ -37,6 +37,24 @@ router.get("/:slug", async (req, res) => {
 })
 
 /*
+ * @route   GET api/projects/:slug
+ * @desc    Get project
+ * @access  Private
+ */
+
+router.put("/:id", async (req, res) => {
+    const { project_name, about } = req.body
+    const project = await Project.findByIdAndUpdate(req.params.id, {
+        name: project_name,
+        description: about,
+    })
+
+    project
+        ? res.json(project)
+        : res.status(404).json({ errors: "No project found" })
+})
+
+/*
  * @route   POST api/projects/new
  * @desc    Create a new project
  * @access  Private

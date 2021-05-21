@@ -72,7 +72,9 @@ export default function ProjectTable({ projectArray }) {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <Link href="#">
+                                            <Link
+                                                href={`/projects/${project.slug}/edit`}
+                                            >
                                                 <a className="hover:text-indigo-900">
                                                     <PencilIcon className="h-5 w-5" />
                                                 </a>
