@@ -4,13 +4,15 @@ import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline"
 import { useRouter } from "next/router"
 
-const profile = [
-    "Your Profile",
-    "Settings",
-    "New Project",
-    "New Issue",
-    "Sign out",
-]
+const navigation = {
+    text: ["Dashboard", "Projects", "Assigned Issues"],
+    links: ["/", "/projects", "#"],
+}
+
+const profile = {
+    text: ["Your Profile", "Settings", "New Project", "New Issue", "Sign Out"],
+    links: ["#", "#", "/projects/new", "/bugs/new", "#"],
+}
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
@@ -36,43 +38,33 @@ export default function Header({ breadcrumb }) {
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-10 flex items-baseline space-x-4">
-                                            <Link href="/">
-                                                {router.pathname === "/" ? (
-                                                    <a className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
-                                                        Dashboard
-                                                    </a>
-                                                ) : (
-                                                    <a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                                        Dashboard
-                                                    </a>
-                                                )}
-                                            </Link>
-
-                                            <Link href="/projects">
-                                                {router.pathname ===
-                                                "/projects" ? (
-                                                    <a className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
-                                                        Projects
-                                                    </a>
-                                                ) : (
-                                                    <a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                                        Projects
-                                                    </a>
-                                                )}
-                                            </Link>
-
-                                            <Link href="#">
-                                                {router.pathname ===
-                                                "/unknown" ? (
-                                                    <a className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
-                                                        Assigned Bugs
-                                                    </a>
-                                                ) : (
-                                                    <a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                                                        Assigned Bugs
-                                                    </a>
-                                                )}
-                                            </Link>
+                                            {navigation.text.map(
+                                                (item, index) =>
+                                                    router.pathname ===
+                                                    navigation.links[index] ? (
+                                                        <Fragment key={item}>
+                                                            <Link href="#">
+                                                                <a className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">
+                                                                    {item}
+                                                                </a>
+                                                            </Link>
+                                                        </Fragment>
+                                                    ) : (
+                                                        <Link
+                                                            href={
+                                                                navigation
+                                                                    .links[
+                                                                    index
+                                                                ]
+                                                            }
+                                                            key={item}
+                                                        >
+                                                            <a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                                                                {item}
+                                                            </a>
+                                                        </Link>
+                                                    )
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -121,8 +113,11 @@ export default function Header({ breadcrumb }) {
                                                             static
                                                             className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                                                         >
-                                                            {profile.map(
-                                                                (item) => (
+                                                            {profile.text.map(
+                                                                (
+                                                                    item,
+                                                                    index
+                                                                ) => (
                                                                     <Menu.Item
                                                                         key={
                                                                             item
@@ -131,7 +126,14 @@ export default function Header({ breadcrumb }) {
                                                                         {({
                                                                             active,
                                                                         }) => (
-                                                                            <Link href="#">
+                                                                            <Link
+                                                                                href={
+                                                                                    profile
+                                                                                        .links[
+                                                                                        index
+                                                                                    ]
+                                                                                }
+                                                                            >
                                                                                 <a
                                                                                     className={classNames(
                                                                                         active
@@ -180,41 +182,27 @@ export default function Header({ breadcrumb }) {
 
                         <Disclosure.Panel className="md:hidden">
                             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                                <Link href="/">
-                                    {router.pathname === "/" ? (
-                                        <a className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
-                                            Dashboard
-                                        </a>
+                                {navigation.text.map((item, index) =>
+                                    router.pathname ===
+                                    navigation.links[index] ? (
+                                        <Fragment key={item}>
+                                            <Link href="#">
+                                                <a className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
+                                                    {item}
+                                                </a>
+                                            </Link>
+                                        </Fragment>
                                     ) : (
-                                        <a className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                                            Dashboard
-                                        </a>
-                                    )}
-                                </Link>
-
-                                <Link href="/projects">
-                                    {router.pathname === "/projects" ? (
-                                        <a className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
-                                            Projects
-                                        </a>
-                                    ) : (
-                                        <a className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                                            Projects
-                                        </a>
-                                    )}
-                                </Link>
-
-                                <Link href="#">
-                                    {router.pathname === "/unknown" ? (
-                                        <a className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">
-                                            Assigned Bugs
-                                        </a>
-                                    ) : (
-                                        <a className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
-                                            Assigned Bugs
-                                        </a>
-                                    )}
-                                </Link>
+                                        <Link
+                                            href={navigation.links[index]}
+                                            key={item}
+                                        >
+                                            <a className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                                                {item}
+                                            </a>
+                                        </Link>
+                                    )
+                                )}
                             </div>
                             <div className="pt-4 pb-3 border-t border-gray-700">
                                 <div className="flex items-center px-5">
@@ -244,8 +232,8 @@ export default function Header({ breadcrumb }) {
                                     </button>
                                 </div>
                                 <div className="mt-3 px-2 space-y-1">
-                                    {profile.map((item) => (
-                                        <Link href="#" key={item}>
+                                    {profile.text.map((item, index) => (
+                                        <Link href={index} key={item}>
                                             <a className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">
                                                 {item}
                                             </a>
