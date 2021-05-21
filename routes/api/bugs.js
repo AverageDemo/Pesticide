@@ -46,11 +46,11 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
 
 router.post(
     "/new",
-    check("name", "Name requires a minimum of 6 characters").isLength({
-        min: 6,
-    }),
-    check("name").custom(async (value, { req }) => {
-        const bug = await Bug.findOne({ slug: slugify(value) })
+    check("bug_name").custom(async (value, { req }) => {
+        const bug = await Bug.findOne({
+            slug: slugify(value),
+            project: req.body.project,
+        })
 
         if (bug) {
             throw new Error("Bug with the same title already exists")
@@ -58,7 +58,7 @@ router.post(
 
         return true
     }),
-    check("description", "Please include a valid description").notEmpty(),
+    check("about", "Please include a valid description").notEmpty(),
     check("project", "Please include a valid project").notEmpty(),
     check("project").custom((value, { req }) => {
         if (!mongoose.Types.ObjectId.isValid(value)) {
@@ -74,26 +74,20 @@ router.post(
             return res.status(400).json({ errors: errors.array() })
         }
 
-        const {
-            name,
-            description,
-            severity,
-            reproduction,
-            stackTrace,
-            project,
-        } = req.body
+        const { bug_name, about, severity, reproduction, stackTrace, project } =
+            req.body
 
         try {
             const count = await Bug.countDocuments()
 
             const newBug = new Bug({
-                name,
-                description,
+                name: bug_name,
+                description: about,
                 severity,
                 reproduction,
                 stackTrace,
                 project,
-                slug: slugify(name),
+                slug: slugify(bug_name),
                 tag: `TEMP-${count}`,
             })
 

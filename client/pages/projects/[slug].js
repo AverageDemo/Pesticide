@@ -4,7 +4,7 @@ import BugTable from "@/components/BugTable"
 
 export default function ProjectPage({ bugs, project }) {
     return (
-        <Layout breadcrumb={`${project.name} Bugs`}>
+        <Layout breadcrumb={`${project.name} > Bugs`}>
             {bugs.length === 0 && <h3>No bugs to display</h3>}
             <BugTable bugArray={bugs} project={project} />
         </Layout>

@@ -28,8 +28,6 @@ export default function NewProjectPage() {
             return toast.error("Empty Fields")
         }
 
-        console.log(JSON.stringify(values))
-
         const res = await fetch(`${API}/projects/new`, {
             method: "POST",
             headers: {
