@@ -10,8 +10,8 @@ const navigation = {
 }
 
 const profile = {
-    text: ["Your Profile", "Settings", "New Project", "New Issue", "Sign Out"],
-    links: ["#", "#", "/projects/new", "/bugs/new", "#"],
+    text: ["Your Profile", "New Project", "New Issue", "Settings", "Sign Out"],
+    links: ["#", "/projects/new", "/bugs/new", "#", "#"],
 }
 
 function classNames(...classes) {
