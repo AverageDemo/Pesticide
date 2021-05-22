@@ -16,6 +16,7 @@ config/default.json
 -   [x] Project editing
 -   [x] Bug creation
 -   [x] Bug editing
+-   [ ] Bug resolution & re-opening
 -   [ ] Viewing a bugs details
 -   [ ] Bug comments
 -   [x] Breadcrumb enhancement
