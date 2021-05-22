@@ -39,6 +39,18 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
 })
 
 /*
+ * @route   DELETE api/bugs/:bugId
+ * @desc    Delete a bug
+ * @access  Private
+ */
+
+router.delete("/:bugId", async (req, res) => {
+    const bug = await Bug.findByIdAndDelete(req.params.bugId)
+
+    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
+})
+
+/*
  * @route   PUT api/bugs/:bugId
  * @desc    Update bug
  * @access  Private
