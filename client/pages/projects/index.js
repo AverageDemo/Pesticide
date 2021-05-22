@@ -18,7 +18,6 @@ export default function ProjectsPage({ projects, openCount }) {
                 </span>,
             ]}
         >
-            {projects.length === 0 && <h3>No projects to display</h3>}
             <ProjectTable projectArray={projects} openCount={openCount} />
         </Layout>
     )
