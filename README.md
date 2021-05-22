@@ -30,7 +30,7 @@ config/default.json
 -   [x] Project editing
 -   [x] Bug creation
 -   [x] Bug editing
--   [ ] Sort bugs in table by status (Resolved towards the bottom)
+-   [x] Sort bugs in table by status (Resolved towards the bottom)
 -   [x] Bug review status & re-opening
 -   [x] Viewing a bugs details
 -   [ ] Add section to add solution (optional input since this could be done via VCS)

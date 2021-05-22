@@ -31,7 +31,7 @@ const BugSchema = new mongoose.Schema({
     status: {
         type: Number,
         default: 0,
-        // 0 - Inactive / 1 - In Progress / 2 - Review / 3 - Resolved
+        // 0 - Inactive / 1 - Active / 2 - Review / 3 - Resolved
     },
     project: {
         type: Schema.Types.ObjectId,
