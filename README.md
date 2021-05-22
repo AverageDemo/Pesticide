@@ -19,21 +19,22 @@ config/default.json
 #### This list will be added to as I find more tasks to complete
 
 -   [ ] Dashboard
--   [ ] Authentication & Role limited routes
+-   [ ] Authentication
+-   -   [ ] Role limit routes
 -   -   [ ] User Profile
+-   -   [ ] Assigning Users to projects
+-   -   [ ] Assigning Users to bugs
+-   -   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
+-   -   [ ] Bug comments
 -   [x] Project creation
 -   [x] Project editing
--   [ ] Assigning Users to Projects
 -   [x] Bug creation
 -   [x] Bug editing
 -   [ ] Sort bugs in table by status (Resolved towards the bottom)
--   [ ] Assigning Users to Bugs
 -   [x] Bug review status & re-opening
 -   [x] Viewing a bugs details
 -   [ ] Add section to add solution (optional input since this could be done via VCS)
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
--   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
--   [ ] Bug comments
 -   [ ] Add pretty confirmation to delete bug button
 -   [x] Breadcrumb enhancement
 
