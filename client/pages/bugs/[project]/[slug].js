@@ -112,8 +112,14 @@ export default function BugPage({ bug, projectObj }) {
                         {bug.name}
                     </h3>
                     <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                        {moment(bug.date).format("LLLL") + " EST"}
+                        Created on {moment(bug.date).format("LLLL") + " EST"}
                     </p>
+                    {bug.date !== bug.dateUpdated && (
+                        <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                            Last updated on{" "}
+                            {moment(bug.dateUpdated).format("LLLL") + " EST"}
+                        </p>
+                    )}
                 </div>
                 <div className="border-t border-gray-200">
                     <dl>
@@ -190,35 +196,44 @@ export default function BugPage({ bug, projectObj }) {
                             </div>
                         )}
                     </dl>
-                    <div className="px-4 py-3 bg-white text-right sm:px-6">
-                        {/* Only show this button if admin / lead dev */}
-                        <button
-                            onClick={handleDeleteBtn}
-                            className="inline-flex justify-center rounded-md border border-transparent shadow-sm mr-2 px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    <div className="px-4 py-3 bg-white flex justify-between sm:px-6">
+                        <Link
+                            href={`/bugs/${projectObj.slug}/${bug.slug}/edit`}
                         >
-                            Delete
-                        </button>
-                        {bug.status === 0 ? (
                             <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                Assign to user
+                                Edit
                             </button>
-                        ) : bug.status === 1 ? (
+                        </Link>
+                        <div>
+                            {/* Only show this button if admin / lead dev */}
                             <button
-                                onClick={handleReviewBtn}
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                onClick={handleDeleteBtn}
+                                className="inline-flex justify-center rounded-md border border-transparent shadow-sm mr-2 px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                             >
-                                Mark for Review
+                                Delete
                             </button>
-                        ) : (
-                            bug.status === 2 && (
-                                <button
-                                    onClick={handleReopenBtn}
-                                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                >
-                                    Re-Open
+                            {bug.status === 0 ? (
+                                <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    Assign to user
                                 </button>
-                            )
-                        )}
+                            ) : bug.status === 1 ? (
+                                <button
+                                    onClick={handleReviewBtn}
+                                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Mark for Review
+                                </button>
+                            ) : (
+                                bug.status === 2 && (
+                                    <button
+                                        onClick={handleReopenBtn}
+                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    >
+                                        Re-Open
+                                    </button>
+                                )
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
