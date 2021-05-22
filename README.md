@@ -19,7 +19,7 @@ config/default.json
 #### This list will be added to as I find more tasks to complete
 
 -   [ ] Dashboard
--   [ ] Authentication & properly role limit routes
+-   [ ] Authentication & Role limited routes
 -   [ ] User Profile
 -   [x] Project creation
 -   [x] Project editing
