@@ -1,3 +1,5 @@
+## Default config options
+
 config/default.json
 
 ```javascript
