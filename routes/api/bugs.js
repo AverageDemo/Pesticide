@@ -23,12 +23,12 @@ router.get("/:slug/bugs", async (req, res) => {
 })
 
 /*
- * @route   PUT api/bugs/:projectId/:bugId
+ * @route   PUT api/bugs/:bugId
  * @desc    Update bug
  * @access  Private
  */
 
-router.put("/:projectId/:bugId", async (req, res) => {
+router.put("/:bugId", async (req, res) => {
     const { bug_name, severity, about, reproduction, stackTrace } = req.body
     const bug = await Bug.findByIdAndUpdate(req.params.bugId, {
         name: bug_name,
@@ -38,6 +38,22 @@ router.put("/:projectId/:bugId", async (req, res) => {
         stackTrace,
         slug: slugify(bug_name),
         dateUpdated: Date.now(),
+    })
+
+    bug ? res.json(bug) : res.status(404).json({ errors: "No bug found" })
+})
+
+/*
+ * @route   PUT api/bugs/:bugId/status
+ * @desc    Update bug status
+ * @access  Private
+ */
+
+router.put("/:bugId/status", async (req, res) => {
+    const { status } = req.body
+
+    const bug = await Bug.findByIdAndUpdate(req.params.bugId, {
+        status,
     })
 
     bug ? res.json(bug) : res.status(404).json({ errors: "No bug found" })

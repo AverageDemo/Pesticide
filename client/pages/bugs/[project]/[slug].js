@@ -1,9 +1,16 @@
+import "react-toastify/dist/ReactToastify.css"
+
+import { ToastContainer, toast } from "react-toastify"
+
 import Link from "next/link"
 import moment from "moment"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
+import { useRouter } from "next/router"
 
 export default function BugPage({ bug, projectObj }) {
+    const router = useRouter()
+
     const statusOptions = {
         Inactive: "bg-gray-300",
         Active: "bg-blue-300",
@@ -18,8 +25,25 @@ export default function BugPage({ bug, projectObj }) {
         Critical: "bg-red-300",
     }
 
-    const handleReviewBtn = (e) => {
-        e.preventDefault()
+    const handleDeleteBtn = (e) => {
+        console.log("Sent for delete")
+    }
+
+    const handleReviewBtn = async (e) => {
+        const res = await fetch(`${API}/bugs/${bug._id}/status`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: 2 }),
+        })
+
+        if (!res.ok) {
+            toast.error("Something went wrong")
+        } else {
+            const bug = await res.json()
+            router.reload()
+        }
 
         console.log("Sent for review")
     }
@@ -56,27 +80,15 @@ export default function BugPage({ bug, projectObj }) {
                 </span>,
             ]}
         >
+            <ToastContainer />
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                 <div className="px-4 py-5 sm:px-6">
-                    <div className="flex justify-between">
-                        <div className="flex-1">
-                            <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                {bug.name}
-                            </h3>
-                            <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                                {moment(bug.date).format("LLLL") + " EST"}
-                            </p>
-                        </div>
-
-                        <div className="pb-3 text-right">
-                            <button
-                                onClick={handleReviewBtn}
-                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Mark for Review
-                            </button>
-                        </div>
-                    </div>
+                    <h3 className="text-lg leading-6 font-medium text-gray-900">
+                        {bug.name}
+                    </h3>
+                    <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                        {moment(bug.date).format("LLLL") + " EST"}
+                    </p>
                 </div>
                 <div className="border-t border-gray-200">
                     <dl>
@@ -153,6 +165,23 @@ export default function BugPage({ bug, projectObj }) {
                             </div>
                         )}
                     </dl>
+                    <div className="px-4 py-3 bg-white text-right sm:px-6">
+                        {/* Only show this button if admin / lead dev */}
+                        <button
+                            onClick={handleDeleteBtn}
+                            className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        >
+                            Delete
+                        </button>{" "}
+                        {bug.status !== 2 && bug.status !== 3 && (
+                            <button
+                                onClick={handleReviewBtn}
+                                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Mark for Review
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </Layout>

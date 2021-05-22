@@ -39,7 +39,7 @@ export default function EditProjectPage({ project, bug }) {
             return toast.error("Empty Fields")
         }
 
-        const res = await fetch(`${API}/bugs/${project._id}/${bug._id}`, {
+        const res = await fetch(`${API}/bugs/${bug._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
