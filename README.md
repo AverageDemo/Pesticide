@@ -7,7 +7,7 @@ config/default.json
 }
 ```
 
-### TODO
+## TODO
 
 #### This list will be added to as I find more tasks to complete
 
