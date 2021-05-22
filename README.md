@@ -28,6 +28,7 @@ config/default.json
 -   -   [ ] Bug comments
 -   [x] Project creation
 -   [x] Project editing
+-   [ ] Open issues counter
 -   [x] Bug creation
 -   [x] Bug editing
 -   [x] Sort bugs in table by status (Resolved towards the bottom)
