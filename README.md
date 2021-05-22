@@ -12,8 +12,10 @@ config/default.json
 -   [ ] Dashboard
 -   [ ] Authentication
 -   [ ] User Profile
--   [ ] Viewing of bugs
--   [ ] Bug comments
--   [x] Bug editing
+-   [x] Project creation
 -   [x] Project editing
+-   [x] Bug creation
+-   [x] Bug editing
+-   [ ] Viewing a bugs details
+-   [ ] Bug comments
 -   [x] Breadcrumb enhancement
