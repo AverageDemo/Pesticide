@@ -3,7 +3,7 @@ import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 import ProjectTable from "@/components/ProjectTable"
 
-export default function ProjectsPage({ projects }) {
+export default function ProjectsPage({ projects, openCount }) {
     return (
         <Layout
             breadcrumb={[
@@ -19,7 +19,7 @@ export default function ProjectsPage({ projects }) {
             ]}
         >
             {projects.length === 0 && <h3>No projects to display</h3>}
-            <ProjectTable projectArray={projects} />
+            <ProjectTable projectArray={projects} openCount={openCount} />
         </Layout>
     )
 }
@@ -28,7 +28,10 @@ export async function getServerSideProps() {
     const res = await fetch(`${API}/projects`)
     const projects = await res.json()
 
+    const openCountRes = await fetch(`${API}/projects/openCount`)
+    const openCount = await openCountRes.json()
+
     return {
-        props: { projects },
+        props: { projects, openCount },
     }
 }

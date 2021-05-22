@@ -28,7 +28,7 @@ config/default.json
 -   -   [ ] Bug comments
 -   [x] Project creation
 -   [x] Project editing
--   [ ] Open issues counter
+-   [x] Open issues counter
 -   [x] Bug creation
 -   [x] Bug editing
 -   [x] Sort bugs in table by status (Resolved towards the bottom)
@@ -36,7 +36,7 @@ config/default.json
 -   [x] Viewing a bugs details
 -   [ ] Add section to add solution (optional input since this could be done via VCS)
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
--   [ ] Add pretty confirmation to delete bug button
+-   [ ] Add pretty confirmation to delete bug button (a modal)
 -   [x] Breadcrumb enhancement
 
 ## Notes

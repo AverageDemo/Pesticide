@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { PencilIcon } from "@heroicons/react/solid"
 
-export default function ProjectTable({ projectArray }) {
+export default function ProjectTable({ projectArray, openCount }) {
     return (
         <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -45,7 +45,7 @@ export default function ProjectTable({ projectArray }) {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {projectArray.length > 0 ? (
-                                    projectArray.map((project) => (
+                                    projectArray.map((project, idx) => (
                                         <tr key={project.name}>
                                             <td className="px-4 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
@@ -71,7 +71,10 @@ export default function ProjectTable({ projectArray }) {
                                             </td>
                                             <td className="px-1 py-4 whitespace-nowrap">
                                                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800">
-                                                    0
+                                                    {
+                                                        openCount[idx]
+                                                            .openBugCount
+                                                    }
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
