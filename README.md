@@ -28,6 +28,12 @@ config/default.json
 -   [x] Bug editing
 -   [ ] Assigning Users to Bugs
 -   [ ] Bug resolution & re-opening
--   [ ] Viewing a bugs details
+-   [x] Viewing a bugs details
+-   [ ] Add section to add solution (optional input since this could be done via VCS)
+-   [ ] Fix bg color of cell on view bug card (reproduction & stack trace)
 -   [ ] Bug comments
 -   [x] Breadcrumb enhancement
+
+## Notes
+
+-   The "Mark for review" button will send the bug resolution for review by a higher role (admin, lead dev, etc)
