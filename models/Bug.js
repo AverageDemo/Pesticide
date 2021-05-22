@@ -10,10 +10,6 @@ const BugSchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
-    tag: {
-        type: String,
-        required: false,
-    },
     severity: {
         type: String,
         default: "Low",

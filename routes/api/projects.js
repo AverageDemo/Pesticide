@@ -37,8 +37,8 @@ router.get("/:slug", async (req, res) => {
 })
 
 /*
- * @route   GET api/projects/:slug
- * @desc    Get project
+ * @route   PUT api/projects/:id
+ * @desc    Update project
  * @access  Private
  */
 
