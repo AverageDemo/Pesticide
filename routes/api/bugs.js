@@ -30,17 +30,15 @@ router.get("/:slug/bugs", async (req, res) => {
 
 router.put("/:projectId/:bugId", async (req, res) => {
     const { bug_name, severity, about, reproduction, stackTrace } = req.body
-    const bug = await Bug.findOneAndUpdate(
-        { _id: req.params.bugId, project: req.params.projectId },
-        {
-            name: bug_name,
-            severity,
-            description: about,
-            reproduction,
-            stackTrace,
-            slug: slugify(bug_name),
-        }
-    )
+    const bug = await Bug.findByIdAndUpdate(req.params.bugId, {
+        name: bug_name,
+        severity,
+        description: about,
+        reproduction,
+        stackTrace,
+        slug: slugify(bug_name),
+        dateUpdated: Date.now(),
+    })
 
     bug ? res.json(bug) : res.status(404).json({ errors: "No bug found" })
 })
