@@ -20,7 +20,7 @@ config/default.json
 
 -   [ ] Dashboard
 -   [ ] Authentication & Role limited routes
--   [ ] User Profile
+-   -   [ ] User Profile
 -   [x] Project creation
 -   [x] Project editing
 -   [ ] Assigning Users to Projects
