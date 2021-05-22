@@ -11,8 +11,7 @@ export default function ProjectsPage({ projects }) {
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <span className="text-gray-400" key="Projects">
                     Projects

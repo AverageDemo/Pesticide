@@ -51,7 +51,6 @@ export default function BugPage({ bug, projectObj }) {
         if (!res.ok) {
             toast.error("Something went wrong")
         } else {
-            const bug = await res.json()
             router.reload()
         }
     }
@@ -68,7 +67,6 @@ export default function BugPage({ bug, projectObj }) {
         if (!res.ok) {
             toast.error("Something went wrong")
         } else {
-            const bug = await res.json()
             router.reload()
         }
     }
@@ -80,15 +78,13 @@ export default function BugPage({ bug, projectObj }) {
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <Link href="/projects" key="Projects">
                     <a className="hover:text-gray-400">Projects</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator2">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <Link
                     href={`/projects/${projectObj.slug}`}
@@ -97,8 +93,7 @@ export default function BugPage({ bug, projectObj }) {
                     <a className="hover:text-gray-400">{projectObj.slug}</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator3">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <span className="text-gray-400" key={bug.name}>
                     {bug.name}

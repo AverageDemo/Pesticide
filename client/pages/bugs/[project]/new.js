@@ -68,15 +68,13 @@ export default function NewBugPage({ projectObj }) {
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <Link href="/projects" key="Projects">
                     <a className="hover:text-gray-400">Projects</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator2">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <Link
                     href={`/projects/${projectObj.slug}`}
@@ -85,8 +83,7 @@ export default function NewBugPage({ projectObj }) {
                     <a className="hover:text-gray-400">{projectObj.name}</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator3">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
 
                 <span className="text-gray-400" key="Bug">

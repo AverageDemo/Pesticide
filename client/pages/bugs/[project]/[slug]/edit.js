@@ -8,7 +8,7 @@ import Link from "next/link"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 
-export default function EditProjectPage({ project, bug }) {
+export default function EditBugPage({ project, bug }) {
     const [values, setValues] = useState({
         bug_name: bug.name,
         severity: bug.severity,
@@ -66,22 +66,19 @@ export default function EditProjectPage({ project, bug }) {
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <Link href="/projects" key="Projects">
                     <a className="hover:text-gray-400">Projects</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator2">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
                 <Link href={`/projects/${project.slug}`} key={project.name}>
                     <a className="hover:text-gray-400">{project.name}</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator3">
-                    {" "}
-                    /{" "}
+                    {" / "}
                 </span>,
 
                 <span className="text-gray-400" key={bug.name}>
