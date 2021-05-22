@@ -14,6 +14,7 @@ const BugSchema = new mongoose.Schema({
         type: String,
         default: "Low",
         required: false,
+        // Low / Moderate / High / Critical
     },
     description: {
         type: String,
@@ -27,9 +28,10 @@ const BugSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    isResolved: {
-        type: Boolean,
-        default: false,
+    status: {
+        type: Number,
+        default: 0,
+        // 0 - Inactive / 1 - In Progress / 2 - Review / 3 - Resolved
     },
     project: {
         type: Schema.Types.ObjectId,

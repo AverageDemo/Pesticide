@@ -44,7 +44,7 @@ export default function ProjectTable({ projectArray }) {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {projectArray.map((project) => (
+                                {projectArray.length > 0 ? (
                                     <tr key={project.name}>
                                         <td className="px-4 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
@@ -53,7 +53,7 @@ export default function ProjectTable({ projectArray }) {
                                                         <Link
                                                             href={`/projects/${project.slug}`}
                                                         >
-                                                            <a className="hover:text-indigo-900">
+                                                            <a className="hover:text-gray-600">
                                                                 {project.name}
                                                             </a>
                                                         </Link>
@@ -75,13 +75,19 @@ export default function ProjectTable({ projectArray }) {
                                             <Link
                                                 href={`/projects/${project.slug}/edit`}
                                             >
-                                                <a className="hover:text-indigo-900">
+                                                <a className="hover:text-grey-600">
                                                     <PencilIcon className="h-5 w-5" />
                                                 </a>
                                             </Link>
                                         </td>
                                     </tr>
-                                ))}
+                                ) : (
+                                    <tr>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            No projects to display
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

@@ -1,7 +1,22 @@
 import Link from "next/link"
+import moment from "moment"
 import { PencilIcon } from "@heroicons/react/solid"
 
 export default function BugTable({ bugArray, project }) {
+    const statusOptions = {
+        Inactive: "bg-gray-300",
+        Active: "bg-blue-300",
+        Review: "bg-red-300",
+        Resolved: "bg-green-300",
+    }
+
+    const severityOptions = {
+        Low: "bg-gray-300",
+        Moderate: "bg-green-300",
+        High: "bg-yellow-300",
+        Critical: "bg-red-300",
+    }
+
     return (
         <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -43,9 +58,21 @@ export default function BugTable({ bugArray, project }) {
                                     </th>
                                     <th
                                         scope="col"
-                                        className="relative px-6 py-3"
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        <span className="sr-only">Edit</span>
+                                        Assigned To
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Submission Date
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
+                                        Actions
                                     </th>
                                 </tr>
                             </thead>
@@ -60,7 +87,7 @@ export default function BugTable({ bugArray, project }) {
                                                             <Link
                                                                 href={`/bugs/${project.slug}/${bug.slug}`}
                                                             >
-                                                                <a className="hover:text-indigo-900">
+                                                                <a className="hover:text-gray-600">
                                                                     {bug.name}
                                                                 </a>
                                                             </Link>
@@ -75,24 +102,44 @@ export default function BugTable({ bugArray, project }) {
                                                 {/* <div className="text-sm text-gray-500">Category</div> */}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                {bug.status ? (
-                                                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        Resolved
-                                                    </span>
-                                                ) : (
-                                                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800">
-                                                        Active
-                                                    </span>
-                                                )}
+                                                <span
+                                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${
+                                                        Object.values(
+                                                            statusOptions
+                                                        )[bug.status]
+                                                    }`}
+                                                >
+                                                    {
+                                                        Object.keys(
+                                                            statusOptions
+                                                        )[bug.status]
+                                                    }
+                                                </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {bug.severity}
+                                                <span
+                                                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${
+                                                        severityOptions[
+                                                            bug.severity
+                                                        ]
+                                                    }`}
+                                                >
+                                                    {bug.severity}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                User
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {moment(bug.date).format(
+                                                    "MM-DD-yyyy"
+                                                )}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <Link
                                                     href={`/bugs/${project.slug}/${bug.slug}/edit`}
                                                 >
-                                                    <a className="hover:text-indigo-900">
+                                                    <a className="hover:text-gray-600">
                                                         <PencilIcon className="h-5 w-5" />
                                                     </a>
                                                 </Link>

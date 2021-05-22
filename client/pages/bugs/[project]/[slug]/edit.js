@@ -131,9 +131,10 @@ export default function EditProjectPage({ project, bug }) {
                                     onChange={handleInputChange}
                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
-                                    <option value="low">Low</option>
-                                    <option value="moderate">Moderate</option>
-                                    <option value="critical">Critical</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="High">High</option>
+                                    <option value="Critical">Critical</option>
                                 </select>
                             </div>
 
