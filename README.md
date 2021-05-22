@@ -1,3 +1,8 @@
+# Pesticide
+
+Open-source bug tracking software written in Node. I'm making use of Mongo, Express, and NextJS in this project.  
+This is the version of Pesticide that is active. The legacy version can be found [here](https://github.com/averagedemo/pesticide-legacy)
+
 ## Default config options
 
 config/default.json
