@@ -23,8 +23,10 @@ config/default.json
 -   [ ] User Profile
 -   [x] Project creation
 -   [x] Project editing
+-   [ ] Assigning Users to Projects
 -   [x] Bug creation
 -   [x] Bug editing
+-   [ ] Assigning Users to Bugs
 -   [ ] Bug resolution & re-opening
 -   [ ] Viewing a bugs details
 -   [ ] Bug comments
