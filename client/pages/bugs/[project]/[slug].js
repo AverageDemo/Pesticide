@@ -6,13 +6,19 @@ export default function BugPage({ bug, projectObj }) {
     return (
         <Layout
             breadcrumb={[
-                <Link href={`/projects/${projectObj.slug}`}>
-                    <a className="italic hover:text-indigo-900">
-                        {projectObj.name}
-                    </a>
+                <Link href="/">
+                    <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
-                " > ",
-                bug.name,
+                <span className="text-gray-400"> / </span>,
+                <Link href="/projects">
+                    <a className="hover:text-gray-400">Projects</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+                <Link href={`/projects/${projectObj.slug}`}>
+                    <a className="hover:text-gray-400">{projectObj.slug}</a>
+                </Link>,
+                <span className="text-gray-400"> / </span>,
+                <span className="text-gray-400">{bug.name}</span>,
             ]}
         >
             Bug content for {bug.name}
