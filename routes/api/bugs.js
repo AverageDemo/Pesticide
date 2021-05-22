@@ -53,7 +53,6 @@ router.get("/openCount", async (req, res) => {
                 openBugCount: { $sum: 1 },
             },
         },
-        { $project: { openBugCount: 1 } },
     ])
 
     openCount.length > 0
