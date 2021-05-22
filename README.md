@@ -7,7 +7,7 @@ This is the version of Pesticide that is active. The legacy version can be found
 
 config/default.json
 
-```javascript
+```json
 {
     "mongoURI": "mongodb+srv://<username>:<password>@<your-cluster-url>/test?retryWrites=true&w=majority",
     "jwtSecret": "secret"
