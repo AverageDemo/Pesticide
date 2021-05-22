@@ -19,7 +19,7 @@ config/default.json
 #### This list will be added to as I find more tasks to complete
 
 -   [ ] Dashboard
--   [ ] Authentication
+-   [ ] Authentication & properly role limit routes
 -   [ ] User Profile
 -   [x] Project creation
 -   [x] Project editing
@@ -34,6 +34,7 @@ config/default.json
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
 -   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
 -   [ ] Bug comments
+-   [ ] Add pretty confirmation to delete bug button
 -   [x] Breadcrumb enhancement
 
 ## Notes

@@ -45,42 +45,46 @@ export default function ProjectTable({ projectArray }) {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {projectArray.length > 0 ? (
-                                    <tr key={project.name}>
-                                        <td className="px-4 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div>
-                                                    <div className="text-sm font-medium text-gray-900">
-                                                        <Link
-                                                            href={`/projects/${project.slug}`}
-                                                        >
-                                                            <a className="hover:text-gray-600">
-                                                                {project.name}
-                                                            </a>
-                                                        </Link>
+                                    projectArray.map((project) => (
+                                        <tr key={project.name}>
+                                            <td className="px-4 py-4 whitespace-nowrap">
+                                                <div className="flex items-center">
+                                                    <div>
+                                                        <div className="text-sm font-medium text-gray-900">
+                                                            <Link
+                                                                href={`/projects/${project.slug}`}
+                                                            >
+                                                                <a className="hover:text-gray-600">
+                                                                    {
+                                                                        project.name
+                                                                    }
+                                                                </a>
+                                                            </Link>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
-                                                {project.description}
-                                            </div>
-                                        </td>
-                                        <td className="px-1 py-4 whitespace-nowrap">
-                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800">
-                                                0
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <Link
-                                                href={`/projects/${project.slug}/edit`}
-                                            >
-                                                <a className="hover:text-grey-600">
-                                                    <PencilIcon className="h-5 w-5" />
-                                                </a>
-                                            </Link>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="text-sm text-gray-900">
+                                                    {project.description}
+                                                </div>
+                                            </td>
+                                            <td className="px-1 py-4 whitespace-nowrap">
+                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-green-800">
+                                                    0
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <Link
+                                                    href={`/projects/${project.slug}/edit`}
+                                                >
+                                                    <a className="hover:text-grey-600">
+                                                        <PencilIcon className="h-5 w-5" />
+                                                    </a>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))
                                 ) : (
                                     <tr>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

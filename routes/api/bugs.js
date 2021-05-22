@@ -19,7 +19,23 @@ router.get("/:slug/bugs", async (req, res) => {
 
     bugs.length > 0
         ? res.json(bugs)
-        : res.status(404).json({ errors: "No bugs found" })
+        : res.status(404).json({ error: "No bugs found" })
+})
+
+/*
+ * @route   GET api/bugs/:projectSlug/:bugSlug
+ * @desc    View a bug
+ * @access  Private
+ */
+
+router.get("/:projectSlug/:bugSlug", async (req, res) => {
+    const project = await Project.find({ slug: req.params.projectSlug })
+    const bug = await Bug.findOne({
+        project: project[0]._id,
+        slug: req.params.bugSlug,
+    })
+
+    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
 
 /*
@@ -40,7 +56,7 @@ router.put("/:bugId", async (req, res) => {
         dateUpdated: Date.now(),
     })
 
-    bug ? res.json(bug) : res.status(404).json({ errors: "No bug found" })
+    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
 
 /*
@@ -56,23 +72,7 @@ router.put("/:bugId/status", async (req, res) => {
         status,
     })
 
-    bug ? res.json(bug) : res.status(404).json({ errors: "No bug found" })
-})
-
-/*
- * @route   GET api/bugs/:projectSlug/:bugSlug
- * @desc    Get all bugs
- * @access  Private
- */
-
-router.get("/:projectSlug/:bugSlug", async (req, res) => {
-    const project = await Project.find({ slug: req.params.projectSlug })
-    const bug = await Bug.findOne({
-        project: project[0]._id,
-        slug: req.params.bugSlug,
-    })
-
-    bug ? res.json(bug) : res.status(404).json({ errors: "No bug found" })
+    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
 
 /*
