@@ -28,7 +28,7 @@ export async function getServerSideProps() {
     const res = await fetch(`${API}/projects`)
     const projects = await res.json()
 
-    const openCountRes = await fetch(`${API}/projects/openCount`)
+    const openCountRes = await fetch(`${API}/bugs/openCount`)
     const openCount = await openCountRes.json()
 
     return {

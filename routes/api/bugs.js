@@ -39,6 +39,29 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
 })
 
 /*
+ * @route   GET api/bugs/openCount
+ * @desc    Get unresolved issue count for a project
+ * @access  Private
+ */
+
+router.get("/openCount", async (req, res) => {
+    const openCount = await Bug.aggregate([
+        { $match: { status: { $ne: 3 } } },
+        {
+            $group: {
+                _id: "$project",
+                openBugCount: { $sum: 1 },
+            },
+        },
+        { $project: { openBugCount: 1 } },
+    ])
+
+    openCount.length > 0
+        ? res.json(openCount)
+        : res.status(404).json({ errors: "Found no bugs" })
+})
+
+/*
  * @route   DELETE api/bugs/:bugId
  * @desc    Delete a bug
  * @access  Private
