@@ -64,20 +64,34 @@ export default function NewBugPage({ projectObj }) {
     return (
         <Layout
             breadcrumb={[
-                <Link href="/">
+                <Link href="/" key="Dashboard">
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <Link href="/projects">
+                <span className="text-gray-400" key="Separator">
+                    {" "}
+                    /{" "}
+                </span>,
+                <Link href="/projects" key="Projects">
                     <a className="hover:text-gray-400">Projects</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <Link href={`/projects/${projectObj.slug}`}>
+                <span className="text-gray-400" key="Separator2">
+                    {" "}
+                    /{" "}
+                </span>,
+                <Link
+                    href={`/projects/${projectObj.slug}`}
+                    key={projectObj.name}
+                >
                     <a className="hover:text-gray-400">{projectObj.name}</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
+                <span className="text-gray-400" key="Separator3">
+                    {" "}
+                    /{" "}
+                </span>,
 
-                <span className="text-gray-400">New Bug</span>,
+                <span className="text-gray-400" key="Bug">
+                    New Bug
+                </span>,
             ]}
         >
             <ToastContainer />
@@ -118,12 +132,11 @@ export default function NewBugPage({ projectObj }) {
                                     name="severity"
                                     autoComplete="severity"
                                     value={values.name}
+                                    defaultValue="low"
                                     onChange={handleInputChange}
                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
-                                    <option value="low" selected>
-                                        Low
-                                    </option>
+                                    <option value="low">Low</option>
                                     <option value="moderate">Moderate</option>
                                     <option value="critical">Critical</option>
                                 </select>

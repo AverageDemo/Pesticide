@@ -48,7 +48,6 @@ export default function EditProjectPage({ project, bug }) {
         })
 
         if (!res.ok) {
-            console.log(res)
             toast.error("Something went wrong")
         } else {
             const bug = await res.json()
@@ -64,20 +63,31 @@ export default function EditProjectPage({ project, bug }) {
     return (
         <Layout
             breadcrumb={[
-                <Link href="/">
+                <Link href="/" key="Dashboard">
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <Link href="/projects">
+                <span className="text-gray-400" key="Separator">
+                    {" "}
+                    /{" "}
+                </span>,
+                <Link href="/projects" key="Projects">
                     <a className="hover:text-gray-400">Projects</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <Link href={`/projects/${project.slug}`}>
+                <span className="text-gray-400" key="Separator2">
+                    {" "}
+                    /{" "}
+                </span>,
+                <Link href={`/projects/${project.slug}`} key={project.name}>
                     <a className="hover:text-gray-400">{project.name}</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
+                <span className="text-gray-400" key="Separator3">
+                    {" "}
+                    /{" "}
+                </span>,
 
-                <span className="text-gray-400">{bug.name}</span>,
+                <span className="text-gray-400" key={bug.name}>
+                    {bug.name}
+                </span>,
             ]}
         >
             <ToastContainer />
@@ -121,9 +131,7 @@ export default function EditProjectPage({ project, bug }) {
                                     onChange={handleInputChange}
                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
-                                    <option value="low" selected>
-                                        Low
-                                    </option>
+                                    <option value="low">Low</option>
                                     <option value="moderate">Moderate</option>
                                     <option value="critical">Critical</option>
                                 </select>
@@ -143,7 +151,6 @@ export default function EditProjectPage({ project, bug }) {
                                         rows={8}
                                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
                                         placeholder="Lorem ipsum..."
-                                        defaultValue={""}
                                         value={values.reproduction}
                                         onChange={handleInputChange}
                                     />
@@ -184,7 +191,6 @@ export default function EditProjectPage({ project, bug }) {
                                         rows={8}
                                         className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
                                         placeholder="Lorem ipsum..."
-                                        defaultValue={""}
                                         value={values.about}
                                         onChange={handleInputChange}
                                         required

@@ -12,6 +12,6 @@ config/default.json
 -   [ ] Authentication
 -   [ ] Viewing of bugs
 -   [ ] Bug comments
--   [ ] Bug editing
+-   [x] Bug editing
 -   [x] Project editing
 -   [x] Breadcrumb enhancement

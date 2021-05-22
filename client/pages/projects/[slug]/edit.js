@@ -14,8 +14,6 @@ export default function EditProjectPage({ project }) {
         about: project.description,
     })
 
-    console.log(JSON.stringify(values))
-
     const router = useRouter()
 
     const handleSubmit = async (e) => {
@@ -39,7 +37,6 @@ export default function EditProjectPage({ project }) {
         })
 
         if (!res.ok) {
-            console.log(res)
             toast.error("Something went wrong")
         } else {
             const project = await res.json()
@@ -55,19 +52,30 @@ export default function EditProjectPage({ project }) {
     return (
         <Layout
             breadcrumb={[
-                <Link href="/">
+                <Link href="/" key="Dashboard">
                     <a className="hover:text-gray-400">Dashboard</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <Link href="/projects">
+                <span className="text-gray-400" key="Separator">
+                    {" "}
+                    /{" "}
+                </span>,
+                <Link href="/projects" key="Projects">
                     <a className="hover:text-gray-400">Projects</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <Link href={`/projects/${project.slug}`}>
+                <span className="text-gray-400" key="Separator2">
+                    {" "}
+                    /{" "}
+                </span>,
+                <Link href={`/projects/${project.slug}`} key={project.name}>
                     <a className="hover:text-gray-400">{project.name}</a>
                 </Link>,
-                <span className="text-gray-400"> / </span>,
-                <span className="text-gray-400">Edit Project</span>,
+                <span className="text-gray-400" key="Separator3">
+                    {" "}
+                    /{" "}
+                </span>,
+                <span className="text-gray-400" key="Edit Projects">
+                    Edit Project
+                </span>,
             ]}
         >
             <ToastContainer />
