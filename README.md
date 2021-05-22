@@ -7,7 +7,9 @@ config/default.json
 }
 ```
 
-### TODO - This list will be added to as I find more tasks to complete
+### TODO
+
+#### This list will be added to as I find more tasks to complete
 
 -   [ ] Dashboard
 -   [ ] Authentication
