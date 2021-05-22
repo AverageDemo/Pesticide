@@ -29,6 +29,23 @@ export default function BugPage({ bug, projectObj }) {
         console.log("Sent for delete")
     }
 
+    const handleReopenBtn = async (e) => {
+        const res = await fetch(`${API}/bugs/${bug._id}/status`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: 1 }),
+        })
+
+        if (!res.ok) {
+            toast.error("Something went wrong")
+        } else {
+            const bug = await res.json()
+            router.reload()
+        }
+    }
+
     const handleReviewBtn = async (e) => {
         const res = await fetch(`${API}/bugs/${bug._id}/status`, {
             method: "PUT",
@@ -44,8 +61,6 @@ export default function BugPage({ bug, projectObj }) {
             const bug = await res.json()
             router.reload()
         }
-
-        console.log("Sent for review")
     }
 
     return (
@@ -173,13 +188,22 @@ export default function BugPage({ bug, projectObj }) {
                         >
                             Delete
                         </button>{" "}
-                        {bug.status !== 2 && bug.status !== 3 && (
+                        {bug.status !== 2 && bug.status !== 3 ? (
                             <button
                                 onClick={handleReviewBtn}
                                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 Mark for Review
                             </button>
+                        ) : (
+                            bug.status === 2 && (
+                                <button
+                                    onClick={handleReopenBtn}
+                                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                >
+                                    Re-Open
+                                </button>
+                            )
                         )}
                     </div>
                 </div>

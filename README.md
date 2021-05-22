@@ -28,7 +28,7 @@ config/default.json
 -   [x] Bug editing
 -   [ ] Sort bugs in table by status (Resolved towards the bottom)
 -   [ ] Assigning Users to Bugs
--   [ ] Bug resolution & re-opening
+-   [x] Bug review status & re-opening
 -   [x] Viewing a bugs details
 -   [ ] Add section to add solution (optional input since this could be done via VCS)
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
