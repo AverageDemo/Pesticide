@@ -228,7 +228,7 @@ export default function BugPage({ bug, projectObj }) {
                             </div>
                         )}
                     </dl>
-                    <div className="px-4 py-3 bg-white flex justify-between sm:px-6">
+                    <div className="px-4 py-3 bg-white flex justify-between sm:px-6 border-t border-gray-100">
                         <Link
                             href={`/bugs/${projectObj.slug}/${bug.slug}/edit`}
                         >
