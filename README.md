@@ -41,6 +41,7 @@ config/default.json
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
 -   [ ] Add pretty confirmation to delete bug button (a modal)
 -   [x] Breadcrumb enhancement
+-   [ ] Clean-up and optimize code and routes
 
 ## Notes
 
