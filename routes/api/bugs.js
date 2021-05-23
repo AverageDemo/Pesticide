@@ -17,9 +17,11 @@ router.get("/:slug/bugs", async (req, res) => {
     const project = await Project.findOne({ slug: req.params.slug })
     const bugs = await Bug.find({ project: project._id }).sort("status")
 
-    bugs.length > 0
+    bugs
         ? res.json(bugs)
-        : res.status(404).json({ error: "No bugs found" })
+        : res.status(404).json({
+              errors: [{ msg: "No bugs found" }],
+          })
 })
 
 /*
@@ -43,7 +45,9 @@ router.get("/openCount", async (req, res) => {
 
     bugs.length > 0
         ? res.json(oc)
-        : res.status(404).json({ errors: "Found no bugs" })
+        : res.status(404).json({
+              errors: [{ msg: "No bugs found" }],
+          })
 })
 
 /*
@@ -59,7 +63,11 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
         slug: req.params.bugSlug,
     }).populate("comments.author", ["name"])
 
-    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
+    bug
+        ? res.json(bug)
+        : res.status(404).json({
+              errors: [{ msg: "No bug found" }],
+          })
 })
 
 /*
@@ -71,7 +79,11 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
 router.delete("/:slug", async (req, res) => {
     const bug = await Bug.findOneAndDelete({ slug: req.params.slug })
 
-    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
+    bug
+        ? res.json(bug)
+        : res.status(404).json({
+              errors: [{ msg: "No bug found" }],
+          })
 })
 
 /*
@@ -141,7 +153,11 @@ router.put("/:slug/status", async (req, res) => {
         { new: true }
     )
 
-    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
+    bug
+        ? res.json(bug)
+        : res.status(404).json({
+              errors: [{ msg: "No bug found" }],
+          })
 })
 
 /*
@@ -190,7 +206,11 @@ router.put("/:slug/:commentid/delete", async (req, res) => {
         { $pull: { comments: { _id: req.params.commentid } } }
     )
 
-    bug ? res.json(bug) : res.status(404).json({ error: "No comment found" })
+    bug
+        ? res.json(bug)
+        : res.status(404).json({
+              errors: [{ msg: "No comment found" }],
+          })
 })
 
 /*

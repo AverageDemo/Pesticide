@@ -35,6 +35,7 @@ config/default.json
 -   [x] Sort bugs in table by status (Resolved towards the bottom)
 -   [x] Bug review status & re-opening
 -   [x] Viewing a bugs details
+-   [ ] Rerouting on invalid pages
 -   [ ] Add section to add solution (optional input since this could be done via VCS)
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
 -   [ ] Add pretty confirmation to delete bug button (a modal)

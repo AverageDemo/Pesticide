@@ -92,6 +92,9 @@ export default function ProjectTable({ projectArray, openCount }) {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             No projects to display
                                         </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
                                     </tr>
                                 )}
                             </tbody>

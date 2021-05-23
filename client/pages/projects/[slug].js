@@ -9,7 +9,7 @@ export default function ProjectPage({ bugs, project }) {
     const router = useRouter()
 
     useEffect(() => {
-        !project && router.push("/")
+        !project && router.push("/projects")
     })
 
     return (
@@ -38,13 +38,17 @@ export default function ProjectPage({ bugs, project }) {
 }
 
 export async function getServerSideProps({ params: { slug } }) {
-    const bugRes = await fetch(`${API}/bugs/${slug}/bugs`)
-    const bugs = await bugRes.json()
-
     const projectRes = await fetch(`${API}/projects/${slug}`)
     const projectData = await projectRes.json()
 
-    const project = !projectData.error && projectData[0]
+    let bugs = {}
+    let project = false
+
+    if (!projectData.error) {
+        const bugRes = await fetch(`${API}/bugs/${slug}/bugs`)
+        bugs = await bugRes.json()
+        project = projectData[0]
+    }
 
     return {
         props: { bugs, project },

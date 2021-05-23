@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify"
 import Link from "next/link"
 import moment from "moment"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { XIcon } from "@heroicons/react/solid"
 import { API } from "@/config/index"
@@ -11,6 +11,10 @@ import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj }) {
     const router = useRouter()
+
+    useEffect(() => {
+        bug.errors && router.push(`/projects/${projectObj.slug}`)
+    })
 
     const statusOptions = {
         Inactive: "bg-gray-300",
@@ -279,7 +283,8 @@ export default function BugPage({ bug, projectObj }) {
                     </div>
                 </div>
             </div>
-            {bug.comments.length > 0 &&
+            {bug.comments &&
+                bug.comments.length > 0 &&
                 bug.comments
                     .sort((a, b) => moment(a.date) - moment(b.date))
                     .map((ctx, idx) => (
@@ -359,9 +364,11 @@ export async function getServerSideProps({ params: { slug, project } }) {
     const bug = await bugRes.json()
 
     const projectRes = await fetch(`${API}/projects/${project}`)
-    const projectObj = await projectRes.json()
+    const projectData = await projectRes.json()
+
+    const projectObj = !projectData.error && projectData[0]
 
     return {
-        props: { bug, projectObj: projectObj[0] },
+        props: { bug, projectObj },
     }
 }
