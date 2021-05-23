@@ -25,7 +25,7 @@ config/default.json
 -   -   [ ] Assigning Users to projects
 -   -   [ ] Assigning Users to bugs
 -   -   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
--   -   [ ] Bug comments
+-   -   [x] Bug comments (though I need to add the logged in user as author)
 -   -   [ ] Bug comment delete button should only be viewable by a higher role (admin, lead dev, etc)
 -   [x] Project creation
 -   [x] Project editing
@@ -35,7 +35,7 @@ config/default.json
 -   [x] Sort bugs in table by status (Resolved towards the bottom)
 -   [x] Bug review status & re-opening
 -   [x] Viewing a bugs details
--   [ ] Rerouting on invalid pages
+-   [x] Rerouting on invalid pages
 -   [ ] Add section to add solution (optional input since this could be done via VCS)
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
 -   [ ] Add pretty confirmation to delete bug button (a modal)
