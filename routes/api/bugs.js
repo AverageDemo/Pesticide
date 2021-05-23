@@ -122,7 +122,7 @@ router.put("/:bugId/status", async (req, res) => {
 })
 
 /*
- * @route   put api/bugs/:slug/newcomment
+ * @route   Put api/bugs/:slug/newcomment
  * @desc    Create a new comment on a bug
  * @access  Private
  */
@@ -154,6 +154,23 @@ router.put(
             .catch((err) => console.log(err))
     }
 )
+
+/*
+ * @route   Put api/bugs/:slug/newcomment
+ * @desc    Create a new comment on a bug
+ * @access  Private
+ */
+
+router.put("/:slug/:commentid/delete", async (req, res) => {
+    const bug = await Bug.findOneAndUpdate(
+        { slug: req.params.slug },
+        { $pull: { comments: { _id: req.params.commentid } } }
+    )
+
+    console.log(bug)
+
+    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
+})
 
 /*
  * @route   POST api/bugs/new

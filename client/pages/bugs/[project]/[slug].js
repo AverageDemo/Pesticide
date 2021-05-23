@@ -1,13 +1,13 @@
 import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
-
 import Link from "next/link"
 import moment from "moment"
-import { API } from "@/config/index"
-import Layout from "@/components/Layout"
 import { useState } from "react"
 import { useRouter } from "next/router"
+import { XIcon } from "@heroicons/react/solid"
+import { API } from "@/config/index"
+import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj }) {
     const router = useRouter()
@@ -29,6 +29,21 @@ export default function BugPage({ bug, projectObj }) {
     const [values, setValues] = useState({
         comment: "",
     })
+
+    const handleDeleteComment = async (id) => {
+        const res = await fetch(`${API}/bugs/${bug.slug}/${id}/delete`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+
+        if (!res.ok) {
+            toast.error("Something went wrong")
+        } else {
+            router.reload()
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -277,12 +292,24 @@ export default function BugPage({ bug, projectObj }) {
                             key={`Comment-${idx}`}
                             className="bg-gray-50 shadow overflow-hidden sm:rounded-lg mt-6"
                         >
-                            <div className="px-4 py-2 sm:px-6">
+                            <div className="px-4 py-2 sm:px-6 flex justify-between">
                                 <p className="mt-1 max-w-2xl text-sm text-gray-600">
                                     <span className="font-semibold">
                                         {ctx.author.name}
                                     </span>
                                     {` posted ${moment(ctx.date).fromNow()}`}
+                                </p>
+
+                                {/* Only show if admin */}
+                                <p className="mt-1 max-w-2xl text-sm text-gray-600">
+                                    <button
+                                        onClick={() =>
+                                            handleDeleteComment(ctx._id)
+                                        }
+                                        className="hover:text-gray-400 focus:outline-none"
+                                    >
+                                        <XIcon className="h-5 w-5" />
+                                    </button>
                                 </p>
                             </div>
 

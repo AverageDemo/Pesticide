@@ -26,6 +26,7 @@ config/default.json
 -   -   [ ] Assigning Users to bugs
 -   -   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
 -   -   [ ] Bug comments
+-   -   [ ] Bug comment delete button should only be viewable by a higher role (admin, lead dev, etc)
 -   [x] Project creation
 -   [x] Project editing
 -   [x] Open issues counter
