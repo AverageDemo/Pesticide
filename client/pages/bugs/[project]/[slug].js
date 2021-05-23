@@ -6,6 +6,7 @@ import Link from "next/link"
 import moment from "moment"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
+import { useState } from "react"
 import { useRouter } from "next/router"
 
 export default function BugPage({ bug, projectObj }) {
@@ -23,6 +24,42 @@ export default function BugPage({ bug, projectObj }) {
         Moderate: "bg-green-300",
         High: "bg-yellow-300",
         Critical: "bg-red-300",
+    }
+
+    const [values, setValues] = useState({
+        comment: "",
+    })
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        // Validation
+        const hasEmptyFields = Object.values(values).some(
+            (element) => element === ""
+        )
+
+        if (hasEmptyFields) {
+            return toast.error("Comment field is empty")
+        }
+
+        const res = await fetch(`${API}/bugs/${bug.slug}/newcomment`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values),
+        })
+
+        if (!res.ok) {
+            toast.error("Something went wrong")
+        } else {
+            router.reload()
+        }
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setValues({ ...values, [name]: value })
     }
 
     const handleDeleteBtn = async (e) => {
@@ -232,6 +269,53 @@ export default function BugPage({ bug, projectObj }) {
                     </div>
                 </div>
             </div>
+            {bug.comments.length > 0 &&
+                bug.comments.map((ctx, idx) => (
+                    <div
+                        key={`Comment-${idx}`}
+                        className="bg-gray-50 shadow overflow-hidden sm:rounded-lg mt-6"
+                    >
+                        <div className="px-4 py-2 sm:px-6">
+                            <p className="mt-1 max-w-2xl text-sm text-gray-600">
+                                <span className="font-semibold">USER</span>
+                                <span> posted X TIME AGO</span>
+                            </p>
+                        </div>
+
+                        <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {ctx.comment}
+                            </dd>
+                        </div>
+                    </div>
+                ))}
+            <form onSubmit={handleSubmit}>
+                <div className="shadow sm:rounded-md sm:overflow-hidden mt-6">
+                    <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+                        <div>
+                            <div className="mt-1">
+                                <textarea
+                                    id="comment"
+                                    name="comment"
+                                    rows={5}
+                                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                    placeholder="New commment"
+                                    value={values.comment}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                        <button
+                            type="submit"
+                            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        >
+                            Post
+                        </button>
+                    </div>
+                </div>
+            </form>
         </Layout>
     )
 }

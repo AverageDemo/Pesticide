@@ -37,7 +37,6 @@ export default function NewProjectPage() {
         })
 
         if (!res.ok) {
-            console.log(res)
             toast.error("Project with the same title already exists")
         } else {
             const project = await res.json()

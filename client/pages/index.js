@@ -1,5 +1,3 @@
-import Link from "next/link"
-import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function HomePage() {

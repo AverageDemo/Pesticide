@@ -23,22 +23,6 @@ router.get("/:slug/bugs", async (req, res) => {
 })
 
 /*
- * @route   GET api/bugs/:projectSlug/:bugSlug
- * @desc    View a bug
- * @access  Private
- */
-
-router.get("/:projectSlug/:bugSlug", async (req, res) => {
-    const project = await Project.find({ slug: req.params.projectSlug })
-    const bug = await Bug.findOne({
-        project: project[0]._id,
-        slug: req.params.bugSlug,
-    })
-
-    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
-})
-
-/*
  * @route   GET api/bugs/openCount
  * @desc    Get unresolved issue count for a project
  * @access  Private
@@ -58,6 +42,22 @@ router.get("/openCount", async (req, res) => {
     openCount.length > 0
         ? res.json(openCount)
         : res.status(404).json({ errors: "Found no bugs" })
+})
+
+/*
+ * @route   GET api/bugs/:projectSlug/:bugSlug
+ * @desc    View a bug
+ * @access  Private
+ */
+
+router.get("/:projectSlug/:bugSlug", async (req, res) => {
+    const project = await Project.find({ slug: req.params.projectSlug })
+    const bug = await Bug.findOne({
+        project: project[0]._id,
+        slug: req.params.bugSlug,
+    })
+
+    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
 
 /*
@@ -110,14 +110,14 @@ router.put("/:bugId/status", async (req, res) => {
 })
 
 /*
- * @route   POST api/bugs/:slug/newcomment
+ * @route   put api/bugs/:slug/newcomment
  * @desc    Create a new comment on a bug
  * @access  Private
  */
 
-router.post(
+router.put(
     "/:slug/newcomment",
-    check("content").notEmpty(),
+    check("comment").notEmpty(),
     async (req, res) => {
         const errors = validationResult(req)
 
@@ -127,7 +127,19 @@ router.post(
 
         const { comment } = req.body
 
-        res.json(comment)
+        Bug.findOne({ slug: req.params.slug })
+            .then((bug) => {
+                const newComment = {
+                    comment,
+                }
+
+                bug.comments.unshift(newComment)
+
+                bug.save()
+                    .then((bug) => res.json(bug))
+                    .catch((err) => console.log(err))
+            })
+            .catch((err) => console.log(err))
     }
 )
 
