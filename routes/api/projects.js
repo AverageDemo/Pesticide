@@ -3,10 +3,7 @@ const router = express.Router()
 const { check, validationResult } = require("express-validator")
 const { default: slugify } = require("slugify")
 
-const checkObjectId = require("../../middleware/checkObjectId")
-
 const Project = require("../../models/Project")
-const Bug = require("../../models/Bug")
 
 /*
  * @route   GET api/projects

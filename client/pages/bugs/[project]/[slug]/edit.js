@@ -20,7 +20,6 @@ export default function EditBugPage({ project, bug }) {
     const router = useRouter()
 
     useEffect(() => {
-        console.log(bug)
         ;(bug.errors || !project) && router.push("/projects")
     })
 

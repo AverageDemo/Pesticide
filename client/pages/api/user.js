@@ -13,7 +13,7 @@ export default async (req, res) => {
         const apiRes = await fetch(`${API_URL}/auth`, {
             method: "GET",
             headers: {
-                Authorization: `Beaarer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
         })
 
