@@ -7,11 +7,13 @@ import { useState, useEffect, useContext } from "react"
 import { LockClosedIcon } from "@heroicons/react/solid"
 import AuthContext from "@/context/AuthContext"
 
-export default function RegistrationPage() {
+export default function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const { login, error } = useContext(AuthContext)
+    const { login, errors } = useContext(AuthContext)
+
+    useEffect(() => errors && errors.map((error) => toast.error(error.msg)))
 
     const handleSubmit = async (e) => {
         e.preventDefault()

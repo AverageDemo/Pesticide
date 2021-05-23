@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { API } from "@/config/index"
+import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 import BugTable from "@/components/BugTable"
 
@@ -39,14 +39,14 @@ export default function ProjectPage({ bugs, project }) {
 }
 
 export async function getServerSideProps({ params: { slug } }) {
-    const projectRes = await fetch(`${API}/projects/${slug}`)
+    const projectRes = await fetch(`${API_URL}/projects/${slug}`)
     const projectData = await projectRes.json()
 
     let bugs = {}
     let project = false
 
     if (!projectData.error) {
-        const bugRes = await fetch(`${API}/bugs/${slug}/bugs`)
+        const bugRes = await fetch(`${API_URL}/bugs/${slug}/bugs`)
         bugs = await bugRes.json()
         project = projectData[0]
     }

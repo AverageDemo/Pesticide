@@ -26,8 +26,8 @@ router.get("/", auth, async (req, res) => {
 // @access   Public
 router.post(
     "/",
-    check("email", "Please include a valid email").normalizeEmail().isEmail(),
-    check("password", "Password is required").exists(),
+    check("email", "Email is required").normalizeEmail().isEmail().notEmpty(),
+    check("password", "Password is required").notEmpty(),
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
@@ -37,12 +37,12 @@ router.post(
         const { email, password } = req.body
 
         try {
-            let user = await User.findOne({ email })
+            const user = await User.findOne({ email })
 
             if (!user) {
                 return res
                     .status(400)
-                    .json({ errors: [{ msg: "Invalid Credentials" }] })
+                    .json({ errors: [{ msg: "Email or password is invalid" }] })
             }
 
             const isMatch = await bcrypt.compare(password, user.password)
@@ -50,7 +50,7 @@ router.post(
             if (!isMatch) {
                 return res
                     .status(400)
-                    .json({ errors: [{ msg: "Invalid Credentials" }] })
+                    .json({ errors: [{ msg: "Email or password is invalid" }] })
             }
 
             const payload = {
@@ -59,13 +59,21 @@ router.post(
                 },
             }
 
+            const userObj = {
+                _id: user.id,
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar,
+                date: user.date,
+            }
+
             jwt.sign(
                 payload,
                 config.get("jwtSecret"),
                 { expiresIn: "5 days" },
-                (err, token) => {
+                (err, jwt) => {
                     if (err) throw err
-                    res.json({ token })
+                    res.json({ jwt, user: userObj })
                 }
             )
         } catch (err) {

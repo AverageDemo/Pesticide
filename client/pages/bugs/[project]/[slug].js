@@ -6,7 +6,7 @@ import moment from "moment"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { XIcon } from "@heroicons/react/solid"
-import { API } from "@/config/index"
+import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj }) {
@@ -35,7 +35,7 @@ export default function BugPage({ bug, projectObj }) {
     })
 
     const handleDeleteComment = async (id) => {
-        const res = await fetch(`${API}/bugs/${bug.slug}/${id}/delete`, {
+        const res = await fetch(`${API_URL}/bugs/${bug.slug}/${id}/delete`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function BugPage({ bug, projectObj }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await fetch(`${API}/bugs/${bug.slug}/newcomment`, {
+        const res = await fetch(`${API_URL}/bugs/${bug.slug}/newcomment`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function BugPage({ bug, projectObj }) {
 
     const handleDeleteBtn = async (e) => {
         if (confirm("Are you sure?")) {
-            const res = await fetch(`${API}/bugs/${bug.slug}`, {
+            const res = await fetch(`${API_URL}/bugs/${bug.slug}`, {
                 method: "DELETE",
             })
 
@@ -91,7 +91,7 @@ export default function BugPage({ bug, projectObj }) {
     }
 
     const handleReopenBtn = async (e) => {
-        const res = await fetch(`${API}/bugs/${bug.slug}/status`, {
+        const res = await fetch(`${API_URL}/bugs/${bug.slug}/status`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -107,7 +107,7 @@ export default function BugPage({ bug, projectObj }) {
     }
 
     const handleReviewBtn = async (e) => {
-        const res = await fetch(`${API}/bugs/${bug.slug}/status`, {
+        const res = await fetch(`${API_URL}/bugs/${bug.slug}/status`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -361,10 +361,10 @@ export default function BugPage({ bug, projectObj }) {
 }
 
 export async function getServerSideProps({ params: { slug, project } }) {
-    const bugRes = await fetch(`${API}/bugs/${project}/${slug}`)
+    const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`)
     const bug = await bugRes.json()
 
-    const projectRes = await fetch(`${API}/projects/${project}`)
+    const projectRes = await fetch(`${API_URL}/projects/${project}`)
     const projectData = await projectRes.json()
 
     const projectObj = !projectData.error && projectData[0]

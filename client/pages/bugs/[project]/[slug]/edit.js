@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { API } from "@/config/index"
+import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function EditBugPage({ project, bug }) {
@@ -27,7 +27,7 @@ export default function EditBugPage({ project, bug }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await fetch(`${API}/bugs/${bug.slug}`, {
+        const res = await fetch(`${API_URL}/bugs/${bug.slug}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -215,14 +215,14 @@ export default function EditBugPage({ project, bug }) {
 }
 
 export async function getServerSideProps({ params: { project, slug } }) {
-    const projectRes = await fetch(`${API}/projects/${project}`)
+    const projectRes = await fetch(`${API_URL}/projects/${project}`)
     const projectData = await projectRes.json()
 
     let bug = {}
     let projectObj = false
 
     if (!projectData.error) {
-        const bugRes = await fetch(`${API}/bugs/${project}/${slug}`)
+        const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`)
         bug = await bugRes.json()
         projectObj = projectData[0]
     }

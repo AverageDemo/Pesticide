@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { API } from "@/config/index"
+import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function EditProjectPage({ project }) {
@@ -23,7 +23,7 @@ export default function EditProjectPage({ project }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await fetch(`${API}/projects/${project.slug}`, {
+        const res = await fetch(`${API_URL}/projects/${project.slug}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -147,7 +147,7 @@ export default function EditProjectPage({ project }) {
 }
 
 export async function getServerSideProps({ params: { slug } }) {
-    const projectRes = await fetch(`${API}/projects/${slug}`)
+    const projectRes = await fetch(`${API_URL}/projects/${slug}`)
     const projectData = await projectRes.json()
 
     const project = !projectData.error && projectData[0]

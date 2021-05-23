@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
-import { API } from "@/config/index"
+import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function NewProjectPage() {
@@ -19,7 +19,7 @@ export default function NewProjectPage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const res = await fetch(`${API}/projects/new`, {
+        const res = await fetch(`${API_URL}/projects/new`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

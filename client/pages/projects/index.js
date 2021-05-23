@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { API } from "@/config/index"
+import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 import ProjectTable from "@/components/ProjectTable"
 
@@ -25,10 +25,10 @@ export default function ProjectsPage({ projects, openCount }) {
 }
 
 export async function getServerSideProps() {
-    const res = await fetch(`${API}/projects`)
+    const res = await fetch(`${API_URL}/projects`)
     const projects = await res.json()
 
-    const openCountRes = await fetch(`${API}/bugs/openCount`)
+    const openCountRes = await fetch(`${API_URL}/bugs/openCount`)
     const openCount = await openCountRes.json()
 
     return {
