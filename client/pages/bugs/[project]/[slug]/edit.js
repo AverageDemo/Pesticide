@@ -20,7 +20,7 @@ export default function EditBugPage({ project, bug }) {
     const router = useRouter()
 
     useEffect(() => {
-        bug.error && router.push("/404")
+        bug.error && router.push("/")
     })
 
     const handleSubmit = async (e) => {

@@ -12,7 +12,7 @@ export default function NewBugPage({ projectObj }) {
     const router = useRouter()
 
     useEffect(() => {
-        !projectObj && router.push("/404")
+        !projectObj && router.push("/")
     })
 
     const [values, setValues] = useState({

@@ -12,7 +12,7 @@ export default function EditProjectPage({ project }) {
     const router = useRouter()
 
     useEffect(() => {
-        !project && router.push("/404")
+        !project && router.push("/")
     })
 
     const [values, setValues] = useState({
