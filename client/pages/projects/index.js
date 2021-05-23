@@ -30,8 +30,6 @@ export async function getServerSideProps() {
     const openCountRes = await fetch(`${API}/bugs/openCount`)
     const openCount = await openCountRes.json()
 
-    console.log(openCount)
-
     return {
         props: { projects, openCount },
     }

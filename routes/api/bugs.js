@@ -29,18 +29,30 @@ router.get("/:slug/bugs", async (req, res) => {
  */
 
 router.get("/openCount", async (req, res) => {
-    const openCount = await Bug.aggregate([
-        { $match: { status: { $ne: 3 } } },
-        {
-            $group: {
-                _id: "$project",
-                openBugCount: { $sum: 1 },
-            },
-        },
-    ])
+    // const openCount = await Bug.aggregate([
+    //     { $match: { status: { $ne: 3 } } },
+    //     {
+    //         $group: {
+    //             _id: "$project",
+    //             openBugCount: { $sum: 1 },
+    //         },
+    //     },
+    // ])
 
-    openCount.length > 0
-        ? res.json(openCount)
+    const bugs = await Bug.find()
+
+    const oc = {}
+
+    bugs.map((bug) => {
+        oc[bug.project] = 0
+    })
+
+    bugs.map((bug) => {
+        bug.status < 3 && oc[bug.project]++
+    })
+
+    bugs.length > 0
+        ? res.json(oc)
         : res.status(404).json({ errors: "Found no bugs" })
 })
 
