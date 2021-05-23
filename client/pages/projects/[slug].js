@@ -31,6 +31,7 @@ export default function ProjectPage({ bugs, project }) {
                     {project.name}
                 </span>,
             ]}
+            page={project.name}
         >
             <BugTable bugArray={bugs} project={project} />
         </Layout>

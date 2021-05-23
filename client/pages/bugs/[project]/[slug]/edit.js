@@ -77,6 +77,7 @@ export default function EditBugPage({ project, bug }) {
                     {bug.name}
                 </span>,
             ]}
+            page={`Editing ${bug.name}`}
         >
             <ToastContainer />
             <form onSubmit={handleSubmit}>

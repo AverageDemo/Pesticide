@@ -150,6 +150,7 @@ export default function BugPage({ bug, projectObj }) {
                     {bug.name}
                 </span>,
             ]}
+            page={bug.name}
         >
             <ToastContainer />
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">

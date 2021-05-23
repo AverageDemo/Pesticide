@@ -62,6 +62,7 @@ export default function NewProjectPage() {
                     New Project
                 </span>,
             ]}
+            page="New Project"
         >
             <ToastContainer />
             <form onSubmit={handleSubmit}>

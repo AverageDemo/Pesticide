@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 
 export default function Layout({
     title,
+    page,
     keywords,
     description,
     children,
@@ -14,7 +15,10 @@ export default function Layout({
     return (
         <div>
             <Head>
-                <title>{title}</title>
+                <title>
+                    {title}
+                    {page}
+                </title>
                 <meta name="description" content={description} />
                 <meta name="keywords" content={keywords} />
             </Head>
@@ -31,7 +35,8 @@ export default function Layout({
 }
 
 Layout.defaultProps = {
-    title: "Pesticide",
+    title: "Pesticide | ",
+    page: "Home",
     description: "Bugtracking software",
     keywords: "bugtrack",
     breadcrumb: "Breadcrumb",

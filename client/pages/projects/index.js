@@ -17,6 +17,7 @@ export default function ProjectsPage({ projects, openCount }) {
                     Projects
                 </span>,
             ]}
+            page="View Projects"
         >
             <ProjectTable projectArray={projects} openCount={openCount} />
         </Layout>

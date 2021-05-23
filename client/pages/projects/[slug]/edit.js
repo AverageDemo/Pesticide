@@ -72,6 +72,7 @@ export default function EditProjectPage({ project }) {
                     Edit Project
                 </span>,
             ]}
+            page={`Editing ${project.name}`}
         >
             <ToastContainer />
             <form onSubmit={handleSubmit}>

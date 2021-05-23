@@ -80,6 +80,7 @@ export default function NewBugPage({ projectObj }) {
                     New Bug
                 </span>,
             ]}
+            page="New Bug"
         >
             <ToastContainer />
             <form onSubmit={handleSubmit}>
