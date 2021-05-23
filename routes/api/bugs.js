@@ -67,7 +67,7 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
     const bug = await Bug.findOne({
         project: project[0]._id,
         slug: req.params.bugSlug,
-    })
+    }).populate("comments.author", ["name"])
 
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })

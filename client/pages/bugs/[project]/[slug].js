@@ -270,25 +270,29 @@ export default function BugPage({ bug, projectObj }) {
                 </div>
             </div>
             {bug.comments.length > 0 &&
-                bug.comments.map((ctx, idx) => (
-                    <div
-                        key={`Comment-${idx}`}
-                        className="bg-gray-50 shadow overflow-hidden sm:rounded-lg mt-6"
-                    >
-                        <div className="px-4 py-2 sm:px-6">
-                            <p className="mt-1 max-w-2xl text-sm text-gray-600">
-                                <span className="font-semibold">USER</span>
-                                <span> posted X TIME AGO</span>
-                            </p>
-                        </div>
+                bug.comments
+                    .sort((a, b) => moment(a.date) - moment(b.date))
+                    .map((ctx, idx) => (
+                        <div
+                            key={`Comment-${idx}`}
+                            className="bg-gray-50 shadow overflow-hidden sm:rounded-lg mt-6"
+                        >
+                            <div className="px-4 py-2 sm:px-6">
+                                <p className="mt-1 max-w-2xl text-sm text-gray-600">
+                                    <span className="font-semibold">
+                                        {ctx.author.name}
+                                    </span>
+                                    {` posted ${moment(ctx.date).fromNow()}`}
+                                </p>
+                            </div>
 
-                        <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {ctx.comment}
-                            </dd>
+                            <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    {ctx.comment}
+                                </dd>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
             <form onSubmit={handleSubmit}>
                 <div className="shadow sm:rounded-md sm:overflow-hidden mt-6">
                     <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
