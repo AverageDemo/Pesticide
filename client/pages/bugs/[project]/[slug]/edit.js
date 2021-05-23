@@ -20,7 +20,8 @@ export default function EditBugPage({ project, bug }) {
     const router = useRouter()
 
     useEffect(() => {
-        bug.error && router.push("/")
+        console.log(bug)
+        ;(bug.errors || !project) && router.push("/projects")
     })
 
     const handleSubmit = async (e) => {
@@ -213,13 +214,19 @@ export default function EditBugPage({ project, bug }) {
 }
 
 export async function getServerSideProps({ params: { project, slug } }) {
-    const bugRes = await fetch(`${API}/bugs/${project}/${slug}`)
-    const bug = await bugRes.json()
-
     const projectRes = await fetch(`${API}/projects/${project}`)
-    const projectObj = await projectRes.json()
+    const projectData = await projectRes.json()
+
+    let bug = {}
+    let projectObj = false
+
+    if (!projectData.error) {
+        const bugRes = await fetch(`${API}/bugs/${project}/${slug}`)
+        bug = await bugRes.json()
+        projectObj = projectData[0]
+    }
 
     return {
-        props: { bug, project: projectObj[0] },
+        props: { bug, project: projectObj },
     }
 }
