@@ -2,19 +2,23 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function EditProjectPage({ project }) {
+    const router = useRouter()
+
+    useEffect(() => {
+        !project && router.push("/404")
+    })
+
     const [values, setValues] = useState({
         project_name: project.name,
         about: project.description,
     })
-
-    const router = useRouter()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -149,9 +153,11 @@ export default function EditProjectPage({ project }) {
 
 export async function getServerSideProps({ params: { slug } }) {
     const projectRes = await fetch(`${API}/projects/${slug}`)
-    const project = await projectRes.json()
+    const projectData = await projectRes.json()
+
+    const project = !projectData.error && projectData[0]
 
     return {
-        props: { project: project[0] },
+        props: { project },
     }
 }

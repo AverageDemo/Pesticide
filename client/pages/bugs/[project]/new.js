@@ -2,13 +2,19 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 
 export default function NewBugPage({ projectObj }) {
+    const router = useRouter()
+
+    useEffect(() => {
+        !projectObj && router.push("/404")
+    })
+
     const [values, setValues] = useState({
         bug_name: "",
         severity: "Low",
@@ -17,8 +23,6 @@ export default function NewBugPage({ projectObj }) {
         stackTrace: "",
         project: projectObj._id,
     })
-
-    const router = useRouter()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -230,9 +234,11 @@ export default function NewBugPage({ projectObj }) {
 
 export async function getServerSideProps({ params: project }) {
     const projectRes = await fetch(`${API}/projects/${project.project}`)
-    const projectObj = await projectRes.json()
+    const projectData = await projectRes.json()
+
+    const projectObj = !projectData.error && projectData[0]
 
     return {
-        props: { projectObj: projectObj[0] },
+        props: { projectObj: projectObj },
     }
 }

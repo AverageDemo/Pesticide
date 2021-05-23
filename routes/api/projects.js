@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 
     projects.length > 0
         ? res.json(projects)
-        : res.status(404).json({ errors: "No projects found" })
+        : res.status(404).json({ error: "No projects found" })
 })
 
 /*
@@ -33,7 +33,7 @@ router.get("/:slug", async (req, res) => {
 
     project.length > 0
         ? res.json(project)
-        : res.status(404).json({ errors: "No project found" })
+        : res.status(404).json({ error: "No project found" })
 })
 
 /*
@@ -51,7 +51,7 @@ router.put("/:id", async (req, res) => {
 
     project
         ? res.json(project)
-        : res.status(404).json({ errors: "No project found" })
+        : res.status(404).json({ error: "No project found" })
 })
 
 /*
@@ -84,7 +84,7 @@ router.post(
             await newProject.save()
             res.json(newProject)
         } catch (e) {
-            res.status(500).json({ errors: "Server error" })
+            res.status(500).json({ error: "Server error" })
         }
     }
 )

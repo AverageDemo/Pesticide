@@ -2,7 +2,7 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { API } from "@/config/index"
@@ -18,6 +18,10 @@ export default function EditBugPage({ project, bug }) {
     })
 
     const router = useRouter()
+
+    useEffect(() => {
+        bug.error && router.push("/404")
+    })
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -50,7 +54,9 @@ export default function EditBugPage({ project, bug }) {
         if (!res.ok) {
             toast.error("Something went wrong")
         } else {
-            router.push(`/projects/${project.slug}`)
+            const bug = res.json()
+            console.log(bug[0])
+            //router.push(`/bugs/${project.slug}`)
         }
     }
 
