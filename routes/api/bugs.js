@@ -29,16 +29,6 @@ router.get("/:slug/bugs", async (req, res) => {
  */
 
 router.get("/openCount", async (req, res) => {
-    // const openCount = await Bug.aggregate([
-    //     { $match: { status: { $ne: 3 } } },
-    //     {
-    //         $group: {
-    //             _id: "$project",
-    //             openBugCount: { $sum: 1 },
-    //         },
-    //     },
-    // ])
-
     const bugs = await Bug.find()
 
     const oc = {}
@@ -73,13 +63,13 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
 })
 
 /*
- * @route   DELETE api/bugs/:bugId
+ * @route   DELETE api/bugs/:slug
  * @desc    Delete a bug
  * @access  Private
  */
 
-router.delete("/:bugId", async (req, res) => {
-    const bug = await Bug.findByIdAndDelete(req.params.bugId)
+router.delete("/:slug", async (req, res) => {
+    const bug = await Bug.findOneAndDelete({ slug: req.params.slug })
 
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
@@ -90,17 +80,20 @@ router.delete("/:bugId", async (req, res) => {
  * @access  Private
  */
 
-router.put("/:bugId", async (req, res) => {
+router.put("/:slug", async (req, res) => {
     const { bug_name, severity, about, reproduction, stackTrace } = req.body
-    const bug = await Bug.findByIdAndUpdate(req.params.bugId, {
-        name: bug_name,
-        severity,
-        description: about,
-        reproduction,
-        stackTrace,
-        slug: slugify(bug_name.toLowerCase()),
-        dateUpdated: Date.now(),
-    })
+    const bug = await Bug.findOneAndUpdate(
+        { slug: req.params.slug },
+        {
+            name: bug_name,
+            severity,
+            description: about,
+            reproduction,
+            stackTrace,
+            slug: slugify(bug_name.toLowerCase()),
+            dateUpdated: Date.now(),
+        }
+    )
 
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
@@ -111,12 +104,15 @@ router.put("/:bugId", async (req, res) => {
  * @access  Private
  */
 
-router.put("/:bugId/status", async (req, res) => {
+router.put("/:slug/status", async (req, res) => {
     const { status } = req.body
 
-    const bug = await Bug.findByIdAndUpdate(req.params.bugId, {
-        status,
-    })
+    const bug = await Bug.findOneAndUpdate(
+        { slug: req.params.slug },
+        {
+            status,
+        }
+    )
 
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })

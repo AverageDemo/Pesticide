@@ -65,17 +65,6 @@ router.post(
     check("project_name", "Name requires a minimum of 6 characters").isLength({
         min: 6,
     }),
-    check("project_name").custom(async (value, { req }) => {
-        const project = await Project.findOne({
-            slug: slugify(value.toLowerCase()),
-        })
-
-        if (project) {
-            throw new Error("Project with the same title already exists")
-        }
-
-        return true
-    }),
     check("about", "Please include a valid description").notEmpty(),
     async (req, res) => {
         const errors = validationResult(req)

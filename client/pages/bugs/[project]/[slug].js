@@ -79,7 +79,7 @@ export default function BugPage({ bug, projectObj }) {
 
     const handleDeleteBtn = async (e) => {
         if (confirm("Are you sure?")) {
-            const res = await fetch(`${API}/bugs/${bug._id}`, {
+            const res = await fetch(`${API}/bugs/${bug.slug}`, {
                 method: "DELETE",
             })
 
@@ -92,7 +92,7 @@ export default function BugPage({ bug, projectObj }) {
     }
 
     const handleReopenBtn = async (e) => {
-        const res = await fetch(`${API}/bugs/${bug._id}/status`, {
+        const res = await fetch(`${API}/bugs/${bug.slug}/status`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export default function BugPage({ bug, projectObj }) {
     }
 
     const handleReviewBtn = async (e) => {
-        const res = await fetch(`${API}/bugs/${bug._id}/status`, {
+        const res = await fetch(`${API}/bugs/${bug.slug}/status`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -274,7 +274,7 @@ export default function BugPage({ bug, projectObj }) {
                                 bug.status === 2 && (
                                     <button
                                         onClick={handleReopenBtn}
-                                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                     >
                                         Re-Open
                                     </button>
