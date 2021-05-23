@@ -19,13 +19,14 @@ config/default.json
 #### This list will be added to as I find more tasks to complete
 
 -   [ ] Dashboard
--   [ ] Authentication
--   -   [ ] Role limit routes
--   -   [ ] User Profile
--   -   [ ] Assigning Users to projects
--   -   [ ] Assigning Users to bugs
--   -   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
+-   [x] Authentication
+-   -   [ ] Access limiting
+-   -   [ ] User profile
+-   -   [ ] Assigning users to bugs
+-   -   [ ] Assigning users to projects
 -   -   [x] Bug comments (though I need to add the logged in user as author)
+-   -   [ ] User roles
+-   -   [ ] Bug delete button should only be viewable by a higher role (admin, lead dev, etc)
 -   -   [ ] Bug comment delete button should only be viewable by a higher role (admin, lead dev, etc)
 -   [x] Project creation
 -   [x] Project editing
