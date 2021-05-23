@@ -98,7 +98,7 @@ export default function LoginPage() {
                                     aria-hidden="true"
                                 />
                             </span>
-                            Sign in
+                            Sign In
                         </button>
                     </div>
                 </form>

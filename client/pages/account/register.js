@@ -128,7 +128,7 @@ export default function RegistrationPage() {
                                     aria-hidden="true"
                                 />
                             </span>
-                            Sign in
+                            Sign Up
                         </button>
                     </div>
                 </form>
