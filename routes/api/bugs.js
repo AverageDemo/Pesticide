@@ -167,8 +167,6 @@ router.put("/:slug/:commentid/delete", async (req, res) => {
         { $pull: { comments: { _id: req.params.commentid } } }
     )
 
-    console.log(bug)
-
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
 })
 
