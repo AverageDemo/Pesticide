@@ -66,7 +66,9 @@ router.post(
         min: 6,
     }),
     check("project_name").custom(async (value, { req }) => {
-        const project = await Project.findOne({ slug: slugify(value) })
+        const project = await Project.findOne({
+            slug: slugify(value.toLowerCase()),
+        })
 
         if (project) {
             throw new Error("Project with the same title already exists")
@@ -87,7 +89,7 @@ router.post(
             const newProject = new Project({
                 name: project_name,
                 description: about,
-                slug: slugify(project_name),
+                slug: slugify(project_name.toLowerCase()),
             })
 
             await newProject.save()

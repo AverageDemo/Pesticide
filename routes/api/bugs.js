@@ -86,7 +86,7 @@ router.put("/:bugId", async (req, res) => {
         description: about,
         reproduction,
         stackTrace,
-        slug: slugify(bug_name),
+        slug: slugify(bug_name.toLowerCase()),
         dateUpdated: Date.now(),
     })
 
@@ -110,6 +110,28 @@ router.put("/:bugId/status", async (req, res) => {
 })
 
 /*
+ * @route   POST api/bugs/:slug/newcomment
+ * @desc    Create a new comment on a bug
+ * @access  Private
+ */
+
+router.post(
+    "/:slug/newcomment",
+    check("content").notEmpty(),
+    async (req, res) => {
+        const errors = validationResult(req)
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+
+        const { comment } = req.body
+
+        res.json(comment)
+    }
+)
+
+/*
  * @route   POST api/bugs/new
  * @desc    Submit a new bug
  * @access  Private
@@ -119,7 +141,7 @@ router.post(
     "/new",
     check("bug_name").custom(async (value, { req }) => {
         const bug = await Bug.findOne({
-            slug: slugify(value),
+            slug: slugify(value.toLowerCase()),
         })
 
         if (bug) {
@@ -157,7 +179,7 @@ router.post(
                 reproduction,
                 stackTrace,
                 project,
-                slug: slugify(bug_name),
+                slug: slugify(bug_name.toLowerCase()),
             })
 
             await newBug.save()
