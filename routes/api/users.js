@@ -15,14 +15,17 @@ const User = require("../../models/User")
 router.post(
     "/",
     check("name", "Name is required").notEmpty(),
-    check("email", "Please include a valid email").normalizeEmail().isEmail(),
+    check("email", "Please include a valid email")
+        .normalizeEmail()
+        .isEmail()
+        .notEmpty(),
     check(
         "password",
         "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
-    check("passwordConfirmation").custom((value, { req }) => {
+    check("passwordConfirm").custom((value, { req }) => {
         if (value !== req.body.password) {
-            throw new Error("Password confirmation does not match password")
+            throw new Error("Passwords do not match")
         }
 
         return true
@@ -41,7 +44,7 @@ router.post(
             if (user) {
                 return res
                     .status(400)
-                    .json({ errors: [{ msg: "User already exists" }] })
+                    .json({ errors: [{ msg: "Email already in use" }] })
             }
 
             const avatar = normalize(
@@ -72,13 +75,21 @@ router.post(
                 },
             }
 
+            const userObj = {
+                _id: user.id,
+                name: user.name,
+                email: user.email,
+                avatar: user.avatar,
+                date: user.date,
+            }
+
             jwt.sign(
                 payload,
                 config.get("jwtSecret"),
-                { expiresIn: "5 days" },
-                (err, token) => {
+                { expiresIn: "1 days" },
+                (err, jwt) => {
                     if (err) throw err
-                    res.json({ token })
+                    res.json({ jwt, user: userObj })
                 }
             )
         } catch (err) {
