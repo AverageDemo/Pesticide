@@ -302,16 +302,24 @@ export default function BugPage({ bug, projectObj }) {
                                     id="comment"
                                     name="comment"
                                     rows={5}
-                                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-                                    placeholder="New commment"
+                                    className={`shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md ${
+                                        bug.status === 3 && "bg-gray-50"
+                                    }`}
+                                    placeholder={
+                                        bug.status === 3
+                                            ? "Locked due to issue being resolved"
+                                            : "New Comment"
+                                    }
                                     value={values.comment}
                                     onChange={handleInputChange}
+                                    disabled={bug.status === 3 && "disabled"}
                                 />
                             </div>
                         </div>
                     </div>
                     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                         <button
+                            disabled={bug.status === 3 && "disabled"}
                             type="submit"
                             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
