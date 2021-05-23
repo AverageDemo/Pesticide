@@ -1,8 +1,9 @@
 import Link from "next/link"
-import { Fragment } from "react"
+import { Fragment, useContext } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline"
 import { useRouter } from "next/router"
+import AuthContext from "@/context/AuthContext"
 
 const navigation = {
     text: ["Dashboard", "Projects", "Assigned Issues"],
@@ -10,8 +11,8 @@ const navigation = {
 }
 
 const profile = {
-    text: ["Your Profile", "New Project", "Settings", "Sign Out"],
-    links: ["#", "/projects/new", "#", "#"],
+    text: ["Your Profile", "New Project", "Settings"],
+    links: ["#", "/projects/new", "#"],
 }
 
 function classNames(...classes) {
@@ -19,6 +20,7 @@ function classNames(...classes) {
 }
 
 export default function Header({ breadcrumb }) {
+    const { user, logout } = useContext(AuthContext)
     const router = useRouter()
 
     return (
@@ -151,6 +153,18 @@ export default function Header({ breadcrumb }) {
                                                                     </Menu.Item>
                                                                 )
                                                             )}
+                                                            <Menu.Item key="Sign Out">
+                                                                <Link href="">
+                                                                    <a
+                                                                        className="block px-4 py-2 text-sm text-gray-700"
+                                                                        onClick={() =>
+                                                                            logout()
+                                                                        }
+                                                                    >
+                                                                        Sign Out
+                                                                    </a>
+                                                                </Link>
+                                                            </Menu.Item>
                                                         </Menu.Items>
                                                     </Transition>
                                                 </>
