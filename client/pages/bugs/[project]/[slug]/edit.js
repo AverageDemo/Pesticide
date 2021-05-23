@@ -98,7 +98,6 @@ export default function EditBugPage({ project, bug }) {
                                         placeholder="Project Name"
                                         value={values.bug_name}
                                         onChange={handleInputChange}
-                                        required
                                     />
                                 </div>
                             </div>
@@ -181,7 +180,6 @@ export default function EditBugPage({ project, bug }) {
                                         placeholder="Lorem ipsum..."
                                         value={values.about}
                                         onChange={handleInputChange}
-                                        required
                                     />
                                 </div>
                                 <p className="mt-2 text-sm text-gray-500">

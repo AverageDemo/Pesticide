@@ -44,6 +44,17 @@ router.get("/:slug", async (req, res) => {
 
 router.put(
     "/:slug",
+    check("project_name").custom(async (value, { req }) => {
+        const project = await Project.findOne({
+            slug: slugify(value.toLowerCase()),
+        })
+
+        if (project && project.slug !== req.params.slug) {
+            throw new Error("A project with the same title already exists")
+        }
+
+        return true
+    }),
     check("project_name", "Name requires a minimum of 6 characters").isLength({
         min: 6,
     }),
@@ -95,6 +106,17 @@ router.put(
 
 router.post(
     "/new",
+    check("project_name").custom(async (value, { req }) => {
+        const project = await Project.findOne({
+            slug: slugify(value.toLowerCase()),
+        })
+
+        if (project) {
+            throw new Error("A project with the same title already exists")
+        }
+
+        return true
+    }),
     check("project_name", "Name requires a minimum of 6 characters").isLength({
         min: 6,
     }),
@@ -117,17 +139,9 @@ router.post(
             await newProject.save()
             res.json(newProject)
         } catch (e) {
-            if (e.code === 11000) {
-                res.status(500).json({
-                    errors: [
-                        { msg: "A project with this title already exists" },
-                    ],
-                })
-            } else {
-                res.status(500).json({
-                    errors: [{ msg: "Server error" }],
-                })
-            }
+            res.status(500).json({
+                errors: [{ msg: "Server error" }],
+            })
         }
     }
 )

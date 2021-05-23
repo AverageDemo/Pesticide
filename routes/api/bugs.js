@@ -80,24 +80,49 @@ router.delete("/:slug", async (req, res) => {
  * @access  Private
  */
 
-router.put("/:slug", async (req, res) => {
-    const { bug_name, severity, about, reproduction, stackTrace } = req.body
-    const bug = await Bug.findOneAndUpdate(
-        { slug: req.params.slug },
-        {
-            name: bug_name,
-            severity,
-            description: about,
-            reproduction,
-            stackTrace,
-            slug: slugify(bug_name.toLowerCase()),
-            dateUpdated: Date.now(),
-        },
-        { new: true }
-    )
+router.put(
+    "/:slug",
+    check("bug_name").custom(async (value, { req }) => {
+        const bug = await Bug.findOne({
+            slug: slugify(value.toLowerCase()),
+        })
 
-    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
-})
+        if (bug && bug.slug !== req.params.slug) {
+            throw new Error("A bug with the same title already exists")
+        }
+
+        return true
+    }),
+    check("about", "Please include a valid description").notEmpty(),
+    async (req, res) => {
+        const errors = validationResult(req)
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+
+        const { bug_name, severity, about, reproduction, stackTrace } = req.body
+        const bug = await Bug.findOneAndUpdate(
+            { slug: req.params.slug },
+            {
+                name: bug_name,
+                severity,
+                description: about,
+                reproduction,
+                stackTrace,
+                slug: slugify(bug_name.toLowerCase()),
+                dateUpdated: Date.now(),
+            },
+            { new: true }
+        )
+
+        bug
+            ? res.json(bug)
+            : res.status(500).json({
+                  errors: [{ msg: "Server error" }],
+              })
+    }
+)
 
 /*
  * @route   PUT api/bugs/:bugId/status
@@ -165,7 +190,7 @@ router.put("/:slug/:commentid/delete", async (req, res) => {
         { $pull: { comments: { _id: req.params.commentid } } }
     )
 
-    bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
+    bug ? res.json(bug) : res.status(404).json({ error: "No comment found" })
 })
 
 /*
@@ -182,7 +207,7 @@ router.post(
         })
 
         if (bug) {
-            throw new Error("Bug with the same title already exists")
+            throw new Error("A bug with the same title already exists")
         }
 
         return true
@@ -225,9 +250,7 @@ router.post(
         } catch (e) {
             if (e.code === 11000) {
                 res.status(500).json({
-                    errors: [
-                        { msg: "A project with this title already exists" },
-                    ],
+                    errors: [{ msg: "A bug with this title already exists" }],
                 })
             } else {
                 res.status(500).json({
