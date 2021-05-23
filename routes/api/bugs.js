@@ -14,8 +14,8 @@ const Project = require("../../models/Project")
  */
 
 router.get("/:slug/bugs", async (req, res) => {
-    const project = await Project.find({ slug: req.params.slug })
-    const bugs = await Bug.find({ project: project[0]._id }).sort("status")
+    const project = await Project.findOne({ slug: req.params.slug })
+    const bugs = await Bug.find({ project: project._id }).sort("status")
 
     bugs.length > 0
         ? res.json(bugs)
@@ -92,7 +92,8 @@ router.put("/:slug", async (req, res) => {
             stackTrace,
             slug: slugify(bug_name.toLowerCase()),
             dateUpdated: Date.now(),
-        }
+        },
+        { new: true }
     )
 
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
@@ -111,7 +112,8 @@ router.put("/:slug/status", async (req, res) => {
         { slug: req.params.slug },
         {
             status,
-        }
+        },
+        { new: true }
     )
 
     bug ? res.json(bug) : res.status(404).json({ error: "No bug found" })
@@ -125,7 +127,7 @@ router.put("/:slug/status", async (req, res) => {
 
 router.put(
     "/:slug/newcomment",
-    check("comment").notEmpty(),
+    check("comment", "Please include a valid comment").notEmpty(),
     async (req, res) => {
         const errors = validationResult(req)
 
@@ -185,6 +187,9 @@ router.post(
 
         return true
     }),
+    check("bug_name", "Name requires a minimum of 6 characters").isLength({
+        min: 6,
+    }),
     check("about", "Please include a valid description").notEmpty(),
     check("project", "Please include a valid project").notEmpty(),
     check("project").custom((value, { req }) => {
@@ -205,8 +210,6 @@ router.post(
             req.body
 
         try {
-            const count = await Bug.countDocuments()
-
             const newBug = new Bug({
                 name: bug_name,
                 description: about,
@@ -220,7 +223,17 @@ router.post(
             await newBug.save()
             res.json(newBug)
         } catch (e) {
-            res.status(500).send("Server error")
+            if (e.code === 11000) {
+                res.status(500).json({
+                    errors: [
+                        { msg: "A project with this title already exists" },
+                    ],
+                })
+            } else {
+                res.status(500).json({
+                    errors: [{ msg: "Server error" }],
+                })
+            }
         }
     }
 )

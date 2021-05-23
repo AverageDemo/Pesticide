@@ -19,15 +19,6 @@ export default function NewProjectPage() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Validation
-        const hasEmptyFields = Object.values(values).some(
-            (element) => element === ""
-        )
-
-        if (hasEmptyFields) {
-            return toast.error("Empty Fields")
-        }
-
         const res = await fetch(`${API}/projects/new`, {
             method: "POST",
             headers: {
@@ -36,10 +27,13 @@ export default function NewProjectPage() {
             body: JSON.stringify(values),
         })
 
+        const project = await res.json()
+
         if (!res.ok) {
-            toast.error("Project with the same title already exists")
+            project.errors.map((error) => {
+                toast.error(error.msg)
+            })
         } else {
-            const project = await res.json()
             router.push(`/projects/${project.slug}`)
         }
     }

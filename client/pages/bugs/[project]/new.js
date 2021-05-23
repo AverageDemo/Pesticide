@@ -27,23 +27,6 @@ export default function NewBugPage({ projectObj }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Validation
-        let hasEmptyFields = false
-
-        const valueObject = Object.values(values)
-
-        if (
-            valueObject[0].length <= 0 ||
-            valueObject[1].length <= 0 ||
-            valueObject[2].length <= 0
-        ) {
-            hasEmptyFields = true
-        }
-
-        if (hasEmptyFields) {
-            return toast.error("Empty Fields")
-        }
-
         const res = await fetch(`${API}/bugs/new`, {
             method: "POST",
             headers: {
@@ -52,10 +35,13 @@ export default function NewBugPage({ projectObj }) {
             body: JSON.stringify(values),
         })
 
+        const bug = await res.json()
+
         if (!res.ok) {
-            toast.error("A bug with the same title already exists")
+            bug.errors.map((error) => {
+                toast.error(error.msg)
+            })
         } else {
-            const bug = await res.json()
             router.push(`/bugs/${projectObj.slug}/${bug.slug}`)
         }
     }
@@ -116,7 +102,6 @@ export default function NewBugPage({ projectObj }) {
                                         placeholder="Project Name"
                                         value={values.name}
                                         onChange={handleInputChange}
-                                        required
                                     />
                                 </div>
                             </div>
@@ -203,7 +188,6 @@ export default function NewBugPage({ projectObj }) {
                                         defaultValue={""}
                                         value={values.name}
                                         onChange={handleInputChange}
-                                        required
                                     />
                                 </div>
                                 <p className="mt-2 text-sm text-gray-500">

@@ -1,9 +1,17 @@
+import { useEffect } from "react"
+import { useRouter } from "next/router"
 import Link from "next/link"
 import { API } from "@/config/index"
 import Layout from "@/components/Layout"
 import BugTable from "@/components/BugTable"
 
 export default function ProjectPage({ bugs, project }) {
+    const router = useRouter()
+
+    useEffect(() => {
+        !project && router.push("/")
+    })
+
     return (
         <Layout
             breadcrumb={[
@@ -24,7 +32,6 @@ export default function ProjectPage({ bugs, project }) {
                 </span>,
             ]}
         >
-            {bugs.length === 0 && <h3>No bugs to display</h3>}
             <BugTable bugArray={bugs} project={project} />
         </Layout>
     )
@@ -35,9 +42,11 @@ export async function getServerSideProps({ params: { slug } }) {
     const bugs = await bugRes.json()
 
     const projectRes = await fetch(`${API}/projects/${slug}`)
-    const project = await projectRes.json()
+    const projectData = await projectRes.json()
+
+    const project = !projectData.error && projectData[0]
 
     return {
-        props: { bugs, project: project[0] },
+        props: { bugs, project },
     }
 }

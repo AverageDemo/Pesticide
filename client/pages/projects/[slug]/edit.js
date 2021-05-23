@@ -23,16 +23,7 @@ export default function EditProjectPage({ project }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Validation
-        const hasEmptyFields = Object.values(values).some(
-            (element) => element === ""
-        )
-
-        if (hasEmptyFields) {
-            return toast.error("Empty Fields")
-        }
-
-        const res = await fetch(`${API}/projects/${project._id}`, {
+        const res = await fetch(`${API}/projects/${project.slug}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -40,11 +31,14 @@ export default function EditProjectPage({ project }) {
             body: JSON.stringify(values),
         })
 
+        const projectRes = await res.json()
+
         if (!res.ok) {
-            toast.error("Something went wrong")
+            projectRes.errors.map((error) => {
+                toast.error(error.msg)
+            })
         } else {
-            const project = await res.json()
-            router.push(`/projects/${project.slug}`)
+            router.push(`/projects/${projectRes.slug}`)
         }
     }
 

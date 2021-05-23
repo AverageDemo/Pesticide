@@ -48,15 +48,6 @@ export default function BugPage({ bug, projectObj }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Validation
-        const hasEmptyFields = Object.values(values).some(
-            (element) => element === ""
-        )
-
-        if (hasEmptyFields) {
-            return toast.error("Comment field is empty")
-        }
-
         const res = await fetch(`${API}/bugs/${bug.slug}/newcomment`, {
             method: "PUT",
             headers: {
@@ -65,8 +56,12 @@ export default function BugPage({ bug, projectObj }) {
             body: JSON.stringify(values),
         })
 
+        const commentRes = await res.json()
+
         if (!res.ok) {
-            toast.error("Something went wrong")
+            commentRes.errors.map((error) => {
+                toast.error(error.msg)
+            })
         } else {
             router.reload()
         }
@@ -142,7 +137,7 @@ export default function BugPage({ bug, projectObj }) {
                     href={`/projects/${projectObj.slug}`}
                     key={projectObj.name}
                 >
-                    <a className="hover:text-gray-400">{projectObj.slug}</a>
+                    <a className="hover:text-gray-400">{projectObj.name}</a>
                 </Link>,
                 <span className="text-gray-400" key="Separator3">
                     {" / "}

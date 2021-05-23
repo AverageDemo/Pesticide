@@ -26,23 +26,6 @@ export default function EditBugPage({ project, bug }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Validation
-        let hasEmptyFields = false
-
-        const valueObject = Object.values(values)
-
-        if (
-            valueObject[0].length <= 0 ||
-            valueObject[1].length <= 0 ||
-            valueObject[2].length <= 0
-        ) {
-            hasEmptyFields = true
-        }
-
-        if (hasEmptyFields) {
-            return toast.error("Empty Fields")
-        }
-
         const res = await fetch(`${API}/bugs/${bug.slug}`, {
             method: "PUT",
             headers: {
@@ -51,12 +34,14 @@ export default function EditBugPage({ project, bug }) {
             body: JSON.stringify(values),
         })
 
+        const bugC = await res.json()
+
         if (!res.ok) {
-            toast.error("Something went wrong")
+            bugC.errors.map((error) => {
+                toast.error(error.msg)
+            })
         } else {
-            const bug = res.json()
-            console.log(bug[0])
-            //router.push(`/bugs/${project.slug}`)
+            router.push(`/bugs/${project.slug}/${bugC.slug}`)
         }
     }
 
