@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken")
 const config = require("config")
-const cookie = require("cookie")
 
 module.exports = function (req, res, next) {
     // Get token from header
-    const token = req.header("x-auth-token")
+    const authHeader = req.header("authorization")
+    const token = authHeader.split("Bearer ")[1]
 
     // Check if not token
     if (!token) {
