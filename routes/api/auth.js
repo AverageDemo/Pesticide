@@ -53,12 +53,25 @@ router.post(
                     .json({ errors: [{ msg: "Email or password is invalid" }] })
             }
 
+            if (user.role === 0) {
+                return res
+                    .status(403)
+                    .json({
+                        errors: [
+                            {
+                                msg: "This acccount is not yet verified. Contact an admin",
+                            },
+                        ],
+                    })
+            }
+
             const userObj = {
                 _id: user.id,
                 name: user.name,
                 email: user.email,
                 avatar: user.avatar,
                 date: user.date,
+                role: 0,
             }
 
             jwt.sign(

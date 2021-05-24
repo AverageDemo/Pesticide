@@ -69,27 +69,7 @@ router.post(
 
             await user.save()
 
-            const userObj = {
-                _id: user.id,
-                name: user.name,
-                email: user.email,
-                avatar: user.avatar,
-                date: user.date,
-            }
-
-            jwt.sign(
-                {
-                    user: {
-                        id: user.id,
-                    },
-                },
-                config.get("jwtSecret"),
-                { expiresIn: "1 days" },
-                (err, jwt) => {
-                    if (err) throw err
-                    res.json({ jwt, user: userObj })
-                }
-            )
+            return res.json({ msg: "Success" })
         } catch (err) {
             console.error(err.message)
             res.status(500).send("Server error")

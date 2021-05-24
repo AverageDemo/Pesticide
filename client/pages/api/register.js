@@ -21,17 +21,10 @@ export default async (req, res) => {
         const data = await apiRes.json()
 
         if (apiRes.ok) {
-            res.setHeader(
-                "Set-Cookie",
-                cookie.serialize("token", data.jwt, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV !== "development",
-                    maxAge: 60 * 60 * 24 * 7, // 1 Week
-                    sameSite: "strict",
-                    path: "/",
-                })
-            )
-            res.status(200).json({ user: data.user })
+            res.status(200).json({
+                user: data.user,
+                message: "This acccount is not yet verified. Contact an admin",
+            })
         } else {
             res.status(400).json({ errors: data.errors })
         }
