@@ -227,16 +227,20 @@ export default function Header({ breadcrumb }) {
                                     <div className="flex-shrink-0">
                                         <img
                                             className="h-10 w-10 rounded-full"
-                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            src={
+                                                user
+                                                    ? user.avatar
+                                                    : "http://gravatar.com/avatar/?d=mm&r=pg&s=200"
+                                            }
                                             alt=""
                                         />
                                     </div>
                                     <div className="ml-3">
                                         <div className="text-base font-medium leading-none text-white">
-                                            Tom Cook
+                                            {user && user.name}
                                         </div>
                                         <div className="text-sm font-medium leading-none text-gray-400">
-                                            tom@example.com
+                                            {user && user.email}
                                         </div>
                                     </div>
                                     <button className="ml-auto bg-gray-800 flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -251,12 +255,23 @@ export default function Header({ breadcrumb }) {
                                 </div>
                                 <div className="mt-3 px-2 space-y-1">
                                     {profile.text.map((item, index) => (
-                                        <Link href={index} key={item}>
+                                        <Link
+                                            href={navigation.links[index]}
+                                            key={item}
+                                        >
                                             <a className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">
                                                 {item}
                                             </a>
                                         </Link>
                                     ))}
+                                    <Link href="">
+                                        <a
+                                            className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
+                                            onClick={() => logout()}
+                                        >
+                                            Sign Out
+                                        </a>
+                                    </Link>
                                 </div>
                             </div>
                         </Disclosure.Panel>
