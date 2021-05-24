@@ -3,7 +3,7 @@ const router = express.Router()
 const bcrypt = require("bcryptjs")
 const gravatar = require("gravatar")
 const normalize = require("normalize-url")
-const { check, validationResult } = require("express-validator")
+const { check, validationResult, header } = require("express-validator")
 
 const User = require("../../models/User")
 
@@ -14,6 +14,11 @@ const User = require("../../models/User")
  */
 router.post(
     "/",
+    header("authorization").custom((value) => {
+        if (value) throw new Error("You are already logged in")
+
+        return true
+    }),
     check("name", "Name is required").notEmpty(),
     check("email", "Please include a valid email")
         .normalizeEmail()

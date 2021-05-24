@@ -3,7 +3,7 @@ const router = express.Router()
 const config = require("config")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const { check, validationResult } = require("express-validator")
+const { check, validationResult, header } = require("express-validator")
 
 const auth = require("../../middleware/auth")
 const User = require("../../models/User")
@@ -30,6 +30,11 @@ router.get("/", auth, async (req, res) => {
  */
 router.post(
     "/",
+    header("authorization").custom((value) => {
+        if (value) throw new Error("You are already logged in")
+
+        return true
+    }),
     check("email", "Email is required").normalizeEmail().isEmail().notEmpty(),
     check("password", "Password is required").notEmpty(),
     async (req, res) => {
