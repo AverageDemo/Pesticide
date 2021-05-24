@@ -1,6 +1,5 @@
 const express = require("express")
 const connectDB = require("./config/db")
-const path = require("path")
 const cors = require("cors")
 
 const app = express()
@@ -17,12 +16,6 @@ app.use("/api/users", require("./routes/api/users"))
 app.use("/api/auth", require("./routes/api/auth"))
 app.use("/api/bugs", require("./routes/api/bugs"))
 app.use("/api/projects", require("./routes/api/projects"))
-
-app.get("/hello", (req, res) => {
-    res.json({
-        message: "Hello World",
-    })
-})
 
 // Serve static assets in production
 // if (process.env.NODE_ENV === 'production') {
