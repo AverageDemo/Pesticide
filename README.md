@@ -21,12 +21,13 @@ config/default.json
 -   [ ] Dashboard
 -   [x] Authentication
 -   -   [x] Change auth middleware to accept from nextjs
--   -   [ ] Access limiting
+-   -   [ ] Access limiting to projects
+-   -   [x] Access limiting to bugs
 -   -   [ ] User profile
 -   -   [ ] Assigning users to bugs
 -   -   [ ] Assigning users to projects
 -   -   [x] Bug comments (though I need to add the logged in user as author)
--   -   [ ] User roles
+-   -   [x] User roles
 -   -   [x] Bug delete button should only be viewable by a higher role and author (admin, lead dev, etc)
 -   -   [x] Bug comment delete button should only be viewable by a higher role and author (admin, lead dev, etc)
 -   [x] Project creation
@@ -43,6 +44,7 @@ config/default.json
 -   [ ] Add pretty confirmation to delete bug button (a modal)
 -   [x] Breadcrumb enhancement
 -   [ ] Clean-up and optimize code and routes
+-   [ ] Admin panel
 
 ## Notes
 
