@@ -203,10 +203,12 @@ export default function BugPage({ bug, projectObj, token }) {
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 <span
                                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${
-                                        severityOptions[bug.severity]
+                                        Object.values(severityOptions)[
+                                            bug.severity
+                                        ]
                                     }`}
                                 >
-                                    {bug.severity}
+                                    {Object.keys(severityOptions)[bug.severity]}
                                 </span>
                             </dd>
                         </div>

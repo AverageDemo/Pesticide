@@ -17,10 +17,10 @@ const BugSchema = new mongoose.Schema({
         unique: true,
     },
     severity: {
-        type: String,
-        default: "Low",
+        type: Number,
+        default: 0,
         required: false,
-        // Low / Moderate / High / Critical
+        // 0 - Low / 1 - Moderate / 2 - High / 3 - Critical
     },
     description: {
         type: String,

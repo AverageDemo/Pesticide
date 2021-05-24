@@ -14,7 +14,7 @@ export default function NewBugPage({ projectObj, token }) {
 
     const [values, setValues] = useState({
         bug_name: "",
-        severity: "Low",
+        severity: 0,
         about: "",
         reproduction: "",
         stackTrace: "",
@@ -117,14 +117,14 @@ export default function NewBugPage({ projectObj, token }) {
                                     name="severity"
                                     autoComplete="severity"
                                     value={values.name}
-                                    defaultValue="Low"
+                                    defaultValue="0"
                                     onChange={handleInputChange}
                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
-                                    <option value="Low">Low</option>
-                                    <option value="Moderate">Moderate</option>
-                                    <option value="High">High</option>
-                                    <option value="Critical">Critical</option>
+                                    <option value="0">Low</option>
+                                    <option value="1">Moderate</option>
+                                    <option value="2">High</option>
+                                    <option value="3">Critical</option>
                                 </select>
                             </div>
 

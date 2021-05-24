@@ -128,12 +128,16 @@ export default function BugTable({ bugArray, project, user }) {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <span
                                                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${
-                                                        severityOptions[
-                                                            bug.severity
-                                                        ]
+                                                        Object.values(
+                                                            severityOptions
+                                                        )[bug.severity]
                                                     }`}
                                                 >
-                                                    {bug.severity}
+                                                    {
+                                                        Object.keys(
+                                                            severityOptions
+                                                        )[bug.severity]
+                                                    }
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
