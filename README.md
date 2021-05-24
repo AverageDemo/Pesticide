@@ -20,8 +20,8 @@ config/default.json
 
 -   [ ] Dashboard
 -   [x] Authentication
--   -   [ ] Change auth middleware to accept from nextjs
--   -   [ ] Access limiting
+-   -   [x] Change auth middleware to accept from nextjs
+-   -   [x] Access limiting
 -   -   [ ] User profile
 -   -   [ ] Assigning users to bugs
 -   -   [ ] Assigning users to projects
