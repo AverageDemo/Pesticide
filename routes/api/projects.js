@@ -3,6 +3,7 @@ const router = express.Router()
 const { check, validationResult } = require("express-validator")
 const { default: slugify } = require("slugify")
 
+const userInfo = require("../../helpers/userInfo")
 const auth = require("../../middleware/auth")
 
 const Project = require("../../models/Project")
@@ -62,35 +63,53 @@ router.put(
             return res.status(400).json({ errors: errors.array() })
         }
 
-        const { project_name, about } = req.body
-        try {
-            const project = await Project.findOneAndUpdate(
-                { slug: req.params.slug },
-                {
-                    name: project_name,
-                    description: about,
-                    slug: slugify(project_name.toLowerCase()),
-                },
-                { new: true }
-            )
+        const user = await userInfo(req.user)
 
-            project
-                ? res.json(project)
-                : res
-                      .status(404)
-                      .json({ errors: [{ msg: "Project already exists" }] })
-        } catch (e) {
-            if (e.code === 11000) {
-                res.status(500).json({
-                    errors: [
-                        { msg: "A project with this title already exists" },
-                    ],
-                })
-            } else {
-                res.status(500).json({
-                    errors: [{ msg: "Server error" }],
-                })
+        const projectC = await Project.findOne({ slug: req.params.slug })
+
+        if (!projectC) {
+            res.status(404).json({
+                errors: [{ msg: "No project found" }],
+            })
+        }
+
+        if (user.role > 1 || String(user._id) === String(projectC.author)) {
+            const { project_name, about } = req.body
+            try {
+                const project = await Project.findOneAndUpdate(
+                    { slug: req.params.slug },
+                    {
+                        name: project_name,
+                        description: about,
+                        slug: slugify(project_name.toLowerCase()),
+                    },
+                    { new: true }
+                )
+
+                project
+                    ? res.json(project)
+                    : res
+                          .status(404)
+                          .json({ errors: [{ msg: "Project already exists" }] })
+            } catch (e) {
+                if (e.code === 11000) {
+                    res.status(500).json({
+                        errors: [
+                            { msg: "A project with this title already exists" },
+                        ],
+                    })
+                } else {
+                    res.status(500).json({
+                        errors: [{ msg: "Server error" }],
+                    })
+                }
             }
+        } else {
+            res.status(403).json({
+                errors: [
+                    { msg: "You are not authorized to edit this project" },
+                ],
+            })
         }
     }
 )
@@ -132,6 +151,7 @@ router.post(
                 name: project_name,
                 description: about,
                 slug: slugify(project_name.toLowerCase()),
+                author: req.user.id,
             })
 
             await newProject.save()

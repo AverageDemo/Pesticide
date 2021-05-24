@@ -2,7 +2,7 @@ import Link from "next/link"
 import moment from "moment"
 import { PencilIcon } from "@heroicons/react/solid"
 
-export default function BugTable({ bugArray, project }) {
+export default function BugTable({ bugArray, project, user }) {
     const statusOptions = {
         Inactive: "bg-gray-300",
         Active: "bg-blue-300",
@@ -22,11 +22,14 @@ export default function BugTable({ bugArray, project }) {
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="pb-3 text-right">
-                        <Link href={`/projects/${project.slug}/edit`}>
-                            <button className="inline-flex justify-center mr-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                Edit Project
-                            </button>
-                        </Link>
+                        {user &&
+                            (user.role > 1 || user._id === project.author) && (
+                                <Link href={`/projects/${project.slug}/edit`}>
+                                    <button className="inline-flex justify-center mr-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                        Edit Project
+                                    </button>
+                                </Link>
+                            )}
 
                         <Link href={`/bugs/${project.slug}/new`}>
                             <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

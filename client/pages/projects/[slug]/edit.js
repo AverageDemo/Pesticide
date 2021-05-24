@@ -160,7 +160,7 @@ export async function getServerSideProps({ params: { slug }, req }) {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
     })
-    const projectData = await projectRes.json()
+    const project = await projectRes.json()
 
     if (!projectRes.ok) {
         return {
@@ -171,9 +171,25 @@ export async function getServerSideProps({ params: { slug }, req }) {
         }
     }
 
-    const project = !projectData.error && projectData[0]
+    const apiRes = await fetch(`${API_URL}/auth`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+
+    const user = await apiRes.json()
+
+    if (user._id !== project[0].author && user.role < 2) {
+        return {
+            redirect: {
+                destination: `/projects/${project[0].slug}`,
+                permanent: false,
+            },
+        }
+    }
 
     return {
-        props: { project, token },
+        props: { project: project[0], token },
     }
 }

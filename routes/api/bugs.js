@@ -279,8 +279,6 @@ router.post(
             return res.status(400).json({ errors: errors.array() })
         }
 
-        const user = await userInfo(req.user)
-
         const { bug_name, about, severity, reproduction, stackTrace, project } =
             req.body
 
@@ -292,7 +290,7 @@ router.post(
                 reproduction,
                 stackTrace,
                 project,
-                author: user._id,
+                author: req.user.id,
                 slug: slugify(bug_name.toLowerCase()),
             })
 

@@ -1,11 +1,14 @@
-import { useRouter } from "next/router"
 import Link from "next/link"
+import { useContext } from "react"
 import { isAuthenticated } from "@/helpers/index"
+import AuthContext from "@/context/AuthContext"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 import BugTable from "@/components/BugTable"
 
 export default function ProjectPage({ bugs, project }) {
+    const { user } = useContext(AuthContext)
+
     return (
         <Layout
             breadcrumb={[
@@ -27,7 +30,7 @@ export default function ProjectPage({ bugs, project }) {
             ]}
             page={project.name}
         >
-            <BugTable bugArray={bugs} project={project} />
+            <BugTable bugArray={bugs} project={project} user={user} />
         </Layout>
     )
 }

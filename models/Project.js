@@ -1,8 +1,15 @@
 const mongoose = require("mongoose")
+const Schema = mongoose.Schema
 
 const ProjectSchema = new mongoose.Schema({
     name: {
         type: String,
+        required: true,
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        default: null,
         required: true,
     },
     slug: {
