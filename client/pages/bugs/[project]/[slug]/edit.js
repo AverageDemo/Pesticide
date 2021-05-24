@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify"
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/router"
-import { API_URL } from "@/config/index"
+import { API_URL, NEXT_URL } from "@/config/index"
 import { isAuthenticated } from "@/helpers/index"
 import Layout from "@/components/Layout"
 
@@ -249,6 +249,24 @@ export async function getServerSideProps({ params: { project, slug }, req }) {
         return {
             redirect: {
                 destination: "/projects",
+                permanent: false,
+            },
+        }
+    }
+
+    const apiRes = await fetch(`${API_URL}/auth`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+
+    const user = await apiRes.json()
+
+    if (user._id !== bug.author._id) {
+        return {
+            redirect: {
+                destination: `/projects/${project}`,
                 permanent: false,
             },
         }

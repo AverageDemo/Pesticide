@@ -189,7 +189,7 @@ router.put("/:slug/status", auth, async (req, res) => {
 })
 
 /*
- * @route   Put api/bugs/:slug/newcomment
+ * @route   PUT api/bugs/:slug/newcomment
  * @desc    Create a new comment on a bug
  * @access  Private
  */
@@ -224,11 +224,11 @@ router.put(
 )
 
 /*
- * @route   Put api/bugs/:slug/newcomment
- * @desc    Create a new comment on a bug
+ * @route   DELETE api/bugs/:slug/:commentid
+ * @desc    Delete a comment
  * @access  Private
  */
-router.put("/:slug/:commentid/delete", auth, async (req, res) => {
+router.delete("/:slug/:commentid", auth, async (req, res) => {
     const bug = await Bug.findOneAndUpdate(
         { slug: req.params.slug },
         { $pull: { comments: { _id: req.params.commentid } } }

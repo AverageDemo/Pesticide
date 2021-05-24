@@ -32,8 +32,8 @@ export default function BugPage({ bug, projectObj, token }) {
     }
 
     const handleDeleteComment = async (id) => {
-        const res = await fetch(`${API_URL}/bugs/${bug.slug}/${id}/delete`, {
-            method: "PUT",
+        const res = await fetch(`${API_URL}/bugs/${bug.slug}/${id}`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -259,7 +259,8 @@ export default function BugPage({ bug, projectObj, token }) {
                                 </Link>
                             )}
                             <div>
-                                {user._id === bug.author._id && (
+                                {(user.role > 1 ||
+                                    user._id === bug.author._id) && (
                                     <button
                                         onClick={handleDeleteBtn}
                                         className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
