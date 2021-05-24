@@ -1,14 +1,15 @@
 import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
-import Link from "next/link"
+
 import moment from "moment"
-import { useState, useContext } from "react"
+import Link from "next/link"
 import { useRouter } from "next/router"
-import AuthContext from "@/context/AuthContext"
+import { useState, useContext } from "react"
 import { XIcon } from "@heroicons/react/solid"
-import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
+import AuthContext from "@/context/AuthContext"
+import { isAuthenticated } from "@/helpers/index"
 import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj, token }) {

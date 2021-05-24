@@ -6,8 +6,6 @@ import Layout from "@/components/Layout"
 import BugTable from "@/components/BugTable"
 
 export default function ProjectPage({ bugs, project }) {
-    const router = useRouter()
-
     return (
         <Layout
             breadcrumb={[

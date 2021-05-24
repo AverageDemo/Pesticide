@@ -2,11 +2,11 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
 
-import { useState } from "react"
-import { useRouter } from "next/router"
 import Link from "next/link"
-import { isAuthenticated } from "@/helpers/index"
+import { useRouter } from "next/router"
+import { useState } from "react"
 import { API_URL } from "@/config/index"
+import { isAuthenticated } from "@/helpers/index"
 import Layout from "@/components/Layout"
 
 export default function NewBugPage({ projectObj, token }) {

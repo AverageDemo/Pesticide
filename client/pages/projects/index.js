@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { API_URL } from "@/config/index"
+import { isAuthenticated } from "@/helpers/index"
 import Layout from "@/components/Layout"
 import ProjectTable from "@/components/ProjectTable"
-import { isAuthenticated } from "@/helpers/index"
 
 export default function ProjectsPage({ projects, openCount }) {
     return (
