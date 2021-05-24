@@ -3,8 +3,9 @@ import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify"
 import Link from "next/link"
 import moment from "moment"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useRouter } from "next/router"
+import AuthContext from "@/context/AuthContext"
 import { XIcon } from "@heroicons/react/solid"
 import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
@@ -12,6 +13,8 @@ import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj, token }) {
     const router = useRouter()
+    const { user } = useContext(AuthContext)
+    const [comment, setComment] = useState()
 
     const statusOptions = {
         Inactive: "bg-gray-300",
@@ -26,10 +29,6 @@ export default function BugPage({ bug, projectObj, token }) {
         High: "bg-yellow-300",
         Critical: "bg-red-300",
     }
-
-    const [values, setValues] = useState({
-        comment: "",
-    })
 
     const handleDeleteComment = async (id) => {
         const res = await fetch(`${API_URL}/bugs/${bug.slug}/${id}/delete`, {
@@ -56,7 +55,7 @@ export default function BugPage({ bug, projectObj, token }) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify(values),
+            body: JSON.stringify({ comment, author: user._id }),
         })
 
         const commentRes = await res.json()
@@ -68,11 +67,6 @@ export default function BugPage({ bug, projectObj, token }) {
         } else {
             router.reload()
         }
-    }
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setValues({ ...values, [name]: value })
     }
 
     const handleDeleteBtn = async (e) => {
@@ -342,8 +336,8 @@ export default function BugPage({ bug, projectObj, token }) {
                                             ? "Locked due to issue being resolved"
                                             : "New Comment"
                                     }
-                                    value={values.comment}
-                                    onChange={handleInputChange}
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
                                     disabled={bug.status === 3 && "disabled"}
                                 />
                             </div>

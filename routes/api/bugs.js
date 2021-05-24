@@ -180,12 +180,13 @@ router.put(
             return res.status(400).json({ errors: errors.array() })
         }
 
-        const { comment } = req.body
+        const { comment, author } = req.body
 
         Bug.findOne({ slug: req.params.slug })
             .then((bug) => {
                 const newComment = {
                     comment,
+                    author,
                 }
 
                 bug.comments.unshift(newComment)

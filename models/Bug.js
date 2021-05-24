@@ -48,7 +48,6 @@ const BugSchema = new mongoose.Schema({
             author: {
                 type: Schema.Types.ObjectId,
                 ref: "user",
-                default: "60a99f1fda7a3c043c387445", // Only supplied while authentication is not implemented - will remove this later
             },
             date: {
                 type: Date,

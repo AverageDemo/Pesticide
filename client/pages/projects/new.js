@@ -32,7 +32,6 @@ export default function NewProjectPage({ token }) {
         const project = await res.json()
 
         if (!res.ok) {
-            console.log(project)
             project.errors.map((error) => {
                 toast.error(error.msg)
             })
