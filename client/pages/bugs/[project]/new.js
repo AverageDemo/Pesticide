@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
@@ -217,7 +218,18 @@ export default function NewBugPage({ projectObj }) {
     )
 }
 
-export async function getServerSideProps({ params: project }) {
+export async function getServerSideProps({ params: project, req }) {
+    const auth = await isAuthenticated(req)
+
+    if (!auth.ok) {
+        return {
+            redirect: {
+                destination: "/account/login",
+                permanent: false,
+            },
+        }
+    }
+
     const projectRes = await fetch(`${API_URL}/projects/${project.project}`)
     const projectData = await projectRes.json()
 

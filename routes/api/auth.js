@@ -53,12 +53,6 @@ router.post(
                     .json({ errors: [{ msg: "Email or password is invalid" }] })
             }
 
-            const payload = {
-                user: {
-                    id: user.id,
-                },
-            }
-
             const userObj = {
                 _id: user.id,
                 name: user.name,
@@ -68,7 +62,11 @@ router.post(
             }
 
             jwt.sign(
-                payload,
+                {
+                    user: {
+                        id: user.id,
+                    },
+                },
                 config.get("jwtSecret"),
                 { expiresIn: "1 days" },
                 (err, jwt) => {

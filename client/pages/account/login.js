@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify"
 import Link from "next/link"
 import { useState, useEffect, useContext } from "react"
 import { LockClosedIcon } from "@heroicons/react/solid"
+import { isAuthenticated } from "@/helpers/index"
 import AuthContext from "@/context/AuthContext"
 
 export default function LoginPage() {
@@ -107,7 +108,18 @@ export default function LoginPage() {
     )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps({ req }) {
+    const auth = await isAuthenticated(req)
+
+    if (auth.ok) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false,
+            },
+        }
+    }
+
     return {
         props: {},
     }

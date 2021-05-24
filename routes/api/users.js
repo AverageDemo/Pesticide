@@ -69,12 +69,6 @@ router.post(
 
             await user.save()
 
-            const payload = {
-                user: {
-                    id: user.id,
-                },
-            }
-
             const userObj = {
                 _id: user.id,
                 name: user.name,
@@ -84,7 +78,11 @@ router.post(
             }
 
             jwt.sign(
-                payload,
+                {
+                    user: {
+                        id: user.id,
+                    },
+                },
                 config.get("jwtSecret"),
                 { expiresIn: "1 days" },
                 (err, jwt) => {

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 import ProjectTable from "@/components/ProjectTable"
+import { isAuthenticated } from "@/helpers/index"
 
 export default function ProjectsPage({ projects, openCount }) {
     return (
@@ -24,7 +25,18 @@ export default function ProjectsPage({ projects, openCount }) {
     )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
+    const auth = await isAuthenticated(req)
+
+    if (!auth.ok) {
+        return {
+            redirect: {
+                destination: "/account/login",
+                permanent: false,
+            },
+        }
+    }
+
     const res = await fetch(`${API_URL}/projects`)
     const projects = await res.json()
 

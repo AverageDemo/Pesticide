@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 import BugTable from "@/components/BugTable"
@@ -38,7 +39,18 @@ export default function ProjectPage({ bugs, project }) {
     )
 }
 
-export async function getServerSideProps({ params: { slug } }) {
+export async function getServerSideProps({ params: { slug }, req }) {
+    const auth = await isAuthenticated(req)
+
+    if (!auth.ok) {
+        return {
+            redirect: {
+                destination: "/account/login",
+                permanent: false,
+            },
+        }
+    }
+
     const projectRes = await fetch(`${API_URL}/projects/${slug}`)
     const projectData = await projectRes.json()
 

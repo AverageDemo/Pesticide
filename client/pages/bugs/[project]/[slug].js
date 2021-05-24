@@ -6,6 +6,7 @@ import moment from "moment"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import { XIcon } from "@heroicons/react/solid"
+import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
@@ -360,7 +361,18 @@ export default function BugPage({ bug, projectObj }) {
     )
 }
 
-export async function getServerSideProps({ params: { slug, project } }) {
+export async function getServerSideProps({ params: { slug, project }, req }) {
+    const auth = await isAuthenticated(req)
+
+    if (!auth.ok) {
+        return {
+            redirect: {
+                destination: "/account/login",
+                permanent: false,
+            },
+        }
+    }
+
     const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`)
     const bug = await bugRes.json()
 
