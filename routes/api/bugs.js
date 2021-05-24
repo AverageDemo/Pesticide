@@ -4,6 +4,7 @@ const { check, validationResult } = require("express-validator")
 const { default: slugify } = require("slugify")
 const mongoose = require("mongoose")
 
+const userInfo = require("../../helpers/userInfo")
 const auth = require("../../middleware/auth")
 
 const Bug = require("../../models/Bug")
@@ -60,7 +61,9 @@ router.get("/:projectSlug/:bugSlug", auth, async (req, res) => {
     const bug = await Bug.findOne({
         project: project[0]._id,
         slug: req.params.bugSlug,
-    }).populate("comments.author", ["name"])
+    })
+        .populate("comments.author", ["name"])
+        .populate("author", ["name"])
 
     bug
         ? res.json(bug)
@@ -75,13 +78,24 @@ router.get("/:projectSlug/:bugSlug", auth, async (req, res) => {
  * @access  Private
  */
 router.delete("/:slug", auth, async (req, res) => {
-    const bug = await Bug.findOneAndDelete({ slug: req.params.slug })
+    const user = await userInfo(req.user)
 
-    bug
-        ? res.json(bug)
-        : res.status(404).json({
-              errors: [{ msg: "No bug found" }],
-          })
+    const bugC = await Bug.findOne({ slug: req.params.slug })
+
+    if (!bugC) {
+        res.status(404).json({
+            errors: [{ msg: "No bug found" }],
+        })
+    }
+
+    if (user.role > 1 || String(user._id) === String(bugC.author)) {
+        await Bug.findOneAndDelete({ slug: req.params.slug })
+        res.json({ msg: "Success" })
+    } else {
+        res.status(403).json({
+            errors: [{ msg: "You are not authorized to delete this bug" }],
+        })
+    }
 })
 
 /*
@@ -111,26 +125,43 @@ router.put(
             return res.status(400).json({ errors: errors.array() })
         }
 
-        const { bug_name, severity, about, reproduction, stackTrace } = req.body
-        const bug = await Bug.findOneAndUpdate(
-            { slug: req.params.slug },
-            {
-                name: bug_name,
-                severity,
-                description: about,
-                reproduction,
-                stackTrace,
-                slug: slugify(bug_name.toLowerCase()),
-                dateUpdated: Date.now(),
-            },
-            { new: true }
-        )
+        const user = await userInfo(req.user)
 
-        bug
-            ? res.json(bug)
-            : res.status(500).json({
-                  errors: [{ msg: "Server error" }],
-              })
+        const bugC = await Bug.findOne({ slug: req.params.slug })
+
+        if (!bugC) {
+            res.status(404).json({
+                errors: [{ msg: "No bug found" }],
+            })
+        }
+
+        if (user.role > 1 || String(user._id) === String(bugC.author)) {
+            const { bug_name, severity, about, reproduction, stackTrace } =
+                req.body
+            const bug = await Bug.findOneAndUpdate(
+                { slug: req.params.slug },
+                {
+                    name: bug_name,
+                    severity,
+                    description: about,
+                    reproduction,
+                    stackTrace,
+                    slug: slugify(bug_name.toLowerCase()),
+                    dateUpdated: Date.now(),
+                },
+                { new: true }
+            )
+
+            bug
+                ? res.json(bug)
+                : res.status(500).json({
+                      errors: [{ msg: "Server error" }],
+                  })
+        } else {
+            res.status(403).json({
+                errors: [{ msg: "You are not authorized to update this bug" }],
+            })
+        }
     }
 )
 
@@ -248,6 +279,8 @@ router.post(
             return res.status(400).json({ errors: errors.array() })
         }
 
+        const user = await userInfo(req.user)
+
         const { bug_name, about, severity, reproduction, stackTrace, project } =
             req.body
 
@@ -259,6 +292,7 @@ router.post(
                 reproduction,
                 stackTrace,
                 project,
+                author: user._id,
                 slug: slugify(bug_name.toLowerCase()),
             })
 

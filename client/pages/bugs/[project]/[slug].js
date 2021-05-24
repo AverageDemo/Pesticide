@@ -81,9 +81,13 @@ export default function BugPage({ bug, projectObj, token }) {
 
             const data = await res.json()
 
-            !res.ok
-                ? toast.error(data.message)
-                : router.push(`/projects/${projectObj.slug}`)
+            if (!res.ok) {
+                data.errors.map((error) => {
+                    toast.error(error.msg)
+                })
+            } else {
+                router.push(`/projects/${projectObj.slug}`)
+            }
         }
     }
 
@@ -158,7 +162,8 @@ export default function BugPage({ bug, projectObj, token }) {
                         {bug.name}
                     </h3>
                     <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                        Created on {moment(bug.date).format("LLLL") + " EST"}
+                        Created on {moment(bug.date).format("LLLL") + " EST"} -
+                        by {bug.author.name}
                     </p>
                     {bug.date !== bug.dateUpdated && (
                         <p className="mt-1 max-w-2xl text-sm text-gray-500">
@@ -242,45 +247,50 @@ export default function BugPage({ bug, projectObj, token }) {
                             </div>
                         )}
                     </dl>
-                    <div className="px-4 py-3 bg-white flex justify-between sm:px-6 border-t border-gray-100">
-                        <Link
-                            href={`/bugs/${projectObj.slug}/${bug.slug}/edit`}
-                        >
-                            <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                Edit
-                            </button>
-                        </Link>
-                        <div>
-                            {/* Only show this button if admin / lead dev */}
-                            <button
-                                onClick={handleDeleteBtn}
-                                className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                            >
-                                Delete
-                            </button>
-                            {bug.status === 0 ? (
-                                <button className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                    Assign to user
-                                </button>
-                            ) : bug.status === 1 ? (
-                                <button
-                                    onClick={handleReviewBtn}
-                                    className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    {user && (
+                        <div className="px-4 py-3 bg-white flex justify-between sm:px-6 border-t border-gray-100">
+                            {user._id === bug.author._id && (
+                                <Link
+                                    href={`/bugs/${projectObj.slug}/${bug.slug}/edit`}
                                 >
-                                    Mark for Review
-                                </button>
-                            ) : (
-                                bug.status === 2 && (
-                                    <button
-                                        onClick={handleReopenBtn}
-                                        className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                                    >
-                                        Re-Open
+                                    <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                        Edit
                                     </button>
-                                )
+                                </Link>
                             )}
+                            <div>
+                                {user._id === bug.author._id && (
+                                    <button
+                                        onClick={handleDeleteBtn}
+                                        className="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                    >
+                                        Delete
+                                    </button>
+                                )}
+                                {bug.status === 0 && user.role > 1 ? (
+                                    <button className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                        Assign to user
+                                    </button>
+                                ) : bug.status === 1 ? (
+                                    <button
+                                        onClick={handleReviewBtn}
+                                        className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    >
+                                        Mark for Review
+                                    </button>
+                                ) : (
+                                    bug.status === 2 && (
+                                        <button
+                                            onClick={handleReopenBtn}
+                                            className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        >
+                                            Re-Open
+                                        </button>
+                                    )
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
             {bug.comments &&
@@ -300,17 +310,20 @@ export default function BugPage({ bug, projectObj, token }) {
                                     {` posted ${moment(ctx.date).fromNow()}`}
                                 </p>
 
-                                {/* Only show if admin */}
-                                <p className="mt-1 max-w-2xl text-sm text-gray-600">
-                                    <button
-                                        onClick={() =>
-                                            handleDeleteComment(ctx._id)
-                                        }
-                                        className="hover:text-gray-400 focus:outline-none"
-                                    >
-                                        <XIcon className="h-5 w-5" />
-                                    </button>
-                                </p>
+                                {user &&
+                                    (user.role > 1 ||
+                                        user._id === ctx.author._id) && (
+                                        <p className="mt-1 max-w-2xl text-sm text-gray-600">
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteComment(ctx._id)
+                                                }
+                                                className="hover:text-gray-400 focus:outline-none"
+                                            >
+                                                <XIcon className="h-5 w-5" />
+                                            </button>
+                                        </p>
+                                    )}
                             </div>
 
                             <div className="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

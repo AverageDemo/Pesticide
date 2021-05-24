@@ -6,6 +6,12 @@ const BugSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        default: null,
+        required: true,
+    },
     slug: {
         type: String,
         unique: true,
