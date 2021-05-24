@@ -6,7 +6,11 @@ import Layout from "@/components/Layout"
 export default function DashboardPage() {
     const { user } = useContext(AuthContext)
 
-    return <Layout breadcrumb="Dashboard">Hello {user.name}</Layout>
+    return (
+        <Layout breadcrumb="Dashboard">
+            Hello {user ? user.name : "User"}
+        </Layout>
+    )
 }
 
 export async function getServerSideProps({ req }) {

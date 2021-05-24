@@ -242,7 +242,7 @@ export async function getServerSideProps({ params: project, req }) {
         }
     }
 
-    const projectObj = !projectData.error && projectData[0]
+    const projectObj = projectData[0]
 
     return {
         props: { projectObj, token },

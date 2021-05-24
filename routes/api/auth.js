@@ -1,16 +1,18 @@
 const express = require("express")
 const router = express.Router()
-const bcrypt = require("bcryptjs")
-const auth = require("../../middleware/auth")
-const jwt = require("jsonwebtoken")
 const config = require("config")
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 const { check, validationResult } = require("express-validator")
 
+const auth = require("../../middleware/auth")
 const User = require("../../models/User")
 
-// @route    GET api/auth
-// @desc     Get user by token
-// @access   Private
+/*
+ * @route   GET api/auth
+ * @desc    Get user by token
+ * @access  Private
+ */
 router.get("/", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select("-password")
@@ -21,9 +23,11 @@ router.get("/", auth, async (req, res) => {
     }
 })
 
-// @route    POST api/auth
-// @desc     Authenticate user & get token
-// @access   Public
+/*
+ * @route   POST api/auth
+ * @desc    Authenticate user & get token
+ * @access  Public
+ */
 router.post(
     "/",
     check("email", "Email is required").normalizeEmail().isEmail().notEmpty(),
@@ -54,15 +58,13 @@ router.post(
             }
 
             if (user.role === 0) {
-                return res
-                    .status(403)
-                    .json({
-                        errors: [
-                            {
-                                msg: "This acccount is not yet verified. Contact an admin",
-                            },
-                        ],
-                    })
+                return res.status(403).json({
+                    errors: [
+                        {
+                            msg: "This acccount is not yet verified. Contact an admin",
+                        },
+                    ],
+                })
             }
 
             const userObj = {

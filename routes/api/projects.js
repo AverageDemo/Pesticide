@@ -11,7 +11,6 @@ const Project = require("../../models/Project")
  * @desc    Get all projects
  * @access  Private
  */
-
 router.get("/", auth, async (req, res) => {
     const projects = await Project.find().sort("-date")
 
@@ -25,7 +24,6 @@ router.get("/", auth, async (req, res) => {
  * @desc    Get project
  * @access  Private
  */
-
 router.get("/:slug", auth, async (req, res) => {
     const project = await Project.find({ slug: req.params.slug })
 
@@ -39,7 +37,6 @@ router.get("/:slug", auth, async (req, res) => {
  * @desc    Update project
  * @access  Private
  */
-
 router.put(
     "/:slug",
     auth,

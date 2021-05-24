@@ -52,18 +52,6 @@ export async function getServerSideProps({ params: { slug }, req }) {
     })
     const projectData = await projectRes.json()
 
-    let bugs = {}
-    let project = false
-
-    if (!projectData.error) {
-        const bugRes = await fetch(`${API_URL}/bugs/${slug}/bugs`, {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
-        })
-        bugs = await bugRes.json()
-        project = projectData[0]
-    }
-
     if (!projectRes.ok) {
         return {
             redirect: {
@@ -72,6 +60,13 @@ export async function getServerSideProps({ params: { slug }, req }) {
             },
         }
     }
+
+    const bugRes = await fetch(`${API_URL}/bugs/${slug}/bugs`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    const bugs = await bugRes.json()
+    const project = projectData[0]
 
     return {
         props: { bugs, project },

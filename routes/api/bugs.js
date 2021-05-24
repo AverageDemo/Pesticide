@@ -14,7 +14,6 @@ const Project = require("../../models/Project")
  * @desc    Get bugs for a project
  * @access  Private
  */
-
 router.get("/:slug/bugs", auth, async (req, res) => {
     const project = await Project.findOne({ slug: req.params.slug })
     const bugs = await Bug.find({ project: project._id }).sort("status")
@@ -31,7 +30,6 @@ router.get("/:slug/bugs", auth, async (req, res) => {
  * @desc    Get unresolved issue count for a project
  * @access  Private
  */
-
 router.get("/openCount", auth, async (req, res) => {
     const bugs = await Bug.find()
 
@@ -57,7 +55,6 @@ router.get("/openCount", auth, async (req, res) => {
  * @desc    View a bug
  * @access  Private
  */
-
 router.get("/:projectSlug/:bugSlug", auth, async (req, res) => {
     const project = await Project.find({ slug: req.params.projectSlug })
     const bug = await Bug.findOne({
@@ -77,7 +74,6 @@ router.get("/:projectSlug/:bugSlug", auth, async (req, res) => {
  * @desc    Delete a bug
  * @access  Private
  */
-
 router.delete("/:slug", auth, async (req, res) => {
     const bug = await Bug.findOneAndDelete({ slug: req.params.slug })
 
@@ -93,7 +89,6 @@ router.delete("/:slug", auth, async (req, res) => {
  * @desc    Update bug
  * @access  Private
  */
-
 router.put(
     "/:slug",
     auth,
@@ -144,7 +139,6 @@ router.put(
  * @desc    Update bug status
  * @access  Private
  */
-
 router.put("/:slug/status", auth, async (req, res) => {
     const { status } = req.body
 
@@ -168,7 +162,6 @@ router.put("/:slug/status", auth, async (req, res) => {
  * @desc    Create a new comment on a bug
  * @access  Private
  */
-
 router.put(
     "/:slug/newcomment",
     auth,
@@ -204,7 +197,6 @@ router.put(
  * @desc    Create a new comment on a bug
  * @access  Private
  */
-
 router.put("/:slug/:commentid/delete", auth, async (req, res) => {
     const bug = await Bug.findOneAndUpdate(
         { slug: req.params.slug },
@@ -223,7 +215,6 @@ router.put("/:slug/:commentid/delete", auth, async (req, res) => {
  * @desc    Submit a new bug
  * @access  Private
  */
-
 router.post(
     "/new",
     auth,
