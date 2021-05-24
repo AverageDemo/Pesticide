@@ -1,8 +1,12 @@
+import { useContext } from "react"
+import AuthContext from "@/context/AuthContext"
 import { isAuthenticated } from "@/helpers/index"
 import Layout from "@/components/Layout"
 
 export default function DashboardPage() {
-    return <Layout breadcrumb="Dashboard">Nothing to display yet</Layout>
+    const { user } = useContext(AuthContext)
+
+    return <Layout breadcrumb="Dashboard">Hello {user.name}</Layout>
 }
 
 export async function getServerSideProps({ req }) {
