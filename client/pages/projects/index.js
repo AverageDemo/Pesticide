@@ -26,9 +26,9 @@ export default function ProjectsPage({ projects, openCount }) {
 }
 
 export async function getServerSideProps({ req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",
@@ -37,10 +37,16 @@ export async function getServerSideProps({ req }) {
         }
     }
 
-    const res = await fetch(`${API_URL}/projects`)
+    const res = await fetch(`${API_URL}/projects`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
     const projects = await res.json()
 
-    const openCountRes = await fetch(`${API_URL}/bugs/openCount`)
+    const openCountRes = await fetch(`${API_URL}/bugs/openCount`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
     const openCount = await openCountRes.json()
 
     return {

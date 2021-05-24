@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { isAuthenticated } from "@/helpers/index"
@@ -8,10 +7,6 @@ import BugTable from "@/components/BugTable"
 
 export default function ProjectPage({ bugs, project }) {
     const router = useRouter()
-
-    useEffect(() => {
-        !project && router.push("/projects")
-    })
 
     return (
         <Layout
@@ -40,9 +35,9 @@ export default function ProjectPage({ bugs, project }) {
 }
 
 export async function getServerSideProps({ params: { slug }, req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",
@@ -51,16 +46,31 @@ export async function getServerSideProps({ params: { slug }, req }) {
         }
     }
 
-    const projectRes = await fetch(`${API_URL}/projects/${slug}`)
+    const projectRes = await fetch(`${API_URL}/projects/${slug}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
     const projectData = await projectRes.json()
 
     let bugs = {}
     let project = false
 
     if (!projectData.error) {
-        const bugRes = await fetch(`${API_URL}/bugs/${slug}/bugs`)
+        const bugRes = await fetch(`${API_URL}/bugs/${slug}/bugs`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${token}` },
+        })
         bugs = await bugRes.json()
         project = projectData[0]
+    }
+
+    if (!projectRes.ok) {
+        return {
+            redirect: {
+                destination: "/projects",
+                permanent: false,
+            },
+        }
     }
 
     return {

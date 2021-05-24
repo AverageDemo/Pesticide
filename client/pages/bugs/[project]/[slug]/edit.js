@@ -2,14 +2,14 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
-export default function EditBugPage({ project, bug }) {
+export default function EditBugPage({ project, bug, token }) {
     const [values, setValues] = useState({
         bug_name: bug.name,
         severity: bug.severity,
@@ -20,10 +20,6 @@ export default function EditBugPage({ project, bug }) {
 
     const router = useRouter()
 
-    useEffect(() => {
-        ;(bug.errors || !project) && router.push("/projects")
-    })
-
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -31,6 +27,7 @@ export default function EditBugPage({ project, bug }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(values),
         })
@@ -215,9 +212,9 @@ export default function EditBugPage({ project, bug }) {
 }
 
 export async function getServerSideProps({ params: { project, slug }, req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",
@@ -226,19 +223,38 @@ export async function getServerSideProps({ params: { project, slug }, req }) {
         }
     }
 
-    const projectRes = await fetch(`${API_URL}/projects/${project}`)
-    const projectData = await projectRes.json()
+    const projectRes = await fetch(`${API_URL}/projects/${project}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    const projectObj = await projectRes.json()
 
-    let bug = {}
-    let projectObj = false
+    if (!projectRes.ok) {
+        return {
+            redirect: {
+                destination: "/projects",
+                permanent: false,
+            },
+        }
+    }
 
-    if (!projectData.error) {
-        const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`)
-        bug = await bugRes.json()
-        projectObj = projectData[0]
+    const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+
+    const bug = await bugRes.json()
+
+    if (!bugRes.ok) {
+        return {
+            redirect: {
+                destination: "/projects",
+                permanent: false,
+            },
+        }
     }
 
     return {
-        props: { bug, project: projectObj },
+        props: { bug, project: projectObj[0], token },
     }
 }

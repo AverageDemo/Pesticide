@@ -12,7 +12,7 @@ const Project = require("../../models/Project")
  * @access  Private
  */
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
     const projects = await Project.find().sort("-date")
 
     projects.length > 0
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
  * @access  Private
  */
 
-router.get("/:slug", async (req, res) => {
+router.get("/:slug", auth, async (req, res) => {
     const project = await Project.find({ slug: req.params.slug })
 
     project.length > 0
@@ -42,6 +42,7 @@ router.get("/:slug", async (req, res) => {
 
 router.put(
     "/:slug",
+    auth,
     check("project_name").custom(async (value, { req }) => {
         const project = await Project.findOne({
             slug: slugify(value.toLowerCase()),
@@ -104,6 +105,7 @@ router.put(
 
 router.post(
     "/new",
+    auth,
     check("project_name").custom(async (value, { req }) => {
         const project = await Project.findOne({
             slug: slugify(value.toLowerCase()),

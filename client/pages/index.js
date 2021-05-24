@@ -1,4 +1,4 @@
-import { isAuthenticated, parseCookies } from "@/helpers/index"
+import { isAuthenticated } from "@/helpers/index"
 import Layout from "@/components/Layout"
 
 export default function DashboardPage() {
@@ -6,9 +6,9 @@ export default function DashboardPage() {
 }
 
 export async function getServerSideProps({ req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",

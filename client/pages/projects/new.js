@@ -9,7 +9,7 @@ import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
-export default function NewProjectPage() {
+export default function NewProjectPage({ token }) {
     const [values, setValues] = useState({
         project_name: "",
         about: "",
@@ -24,6 +24,7 @@ export default function NewProjectPage() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(values),
         })
@@ -31,6 +32,7 @@ export default function NewProjectPage() {
         const project = await res.json()
 
         if (!res.ok) {
+            console.log(project)
             project.errors.map((error) => {
                 toast.error(error.msg)
             })
@@ -135,9 +137,9 @@ export default function NewProjectPage() {
 }
 
 export async function getServerSideProps({ req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",
@@ -147,6 +149,6 @@ export async function getServerSideProps({ req }) {
     }
 
     return {
-        props: {},
+        props: { token },
     }
 }

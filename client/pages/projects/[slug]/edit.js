@@ -2,19 +2,15 @@ import "react-toastify/dist/ReactToastify.css"
 
 import { ToastContainer, toast } from "react-toastify"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
-export default function EditProjectPage({ project }) {
+export default function EditProjectPage({ project, token }) {
     const router = useRouter()
-
-    useEffect(() => {
-        !project && router.push("/projects")
-    })
 
     const [values, setValues] = useState({
         project_name: project.name,
@@ -28,6 +24,7 @@ export default function EditProjectPage({ project }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(values),
         })
@@ -148,9 +145,9 @@ export default function EditProjectPage({ project }) {
 }
 
 export async function getServerSideProps({ params: { slug }, req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",
@@ -159,12 +156,24 @@ export async function getServerSideProps({ params: { slug }, req }) {
         }
     }
 
-    const projectRes = await fetch(`${API_URL}/projects/${slug}`)
+    const projectRes = await fetch(`${API_URL}/projects/${slug}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
     const projectData = await projectRes.json()
+
+    if (!projectRes.ok) {
+        return {
+            redirect: {
+                destination: "/projects",
+                permanent: false,
+            },
+        }
+    }
 
     const project = !projectData.error && projectData[0]
 
     return {
-        props: { project },
+        props: { project, token },
     }
 }

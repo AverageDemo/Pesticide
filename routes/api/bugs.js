@@ -4,6 +4,8 @@ const { check, validationResult } = require("express-validator")
 const { default: slugify } = require("slugify")
 const mongoose = require("mongoose")
 
+const auth = require("../../middleware/auth")
+
 const Bug = require("../../models/Bug")
 const Project = require("../../models/Project")
 
@@ -13,7 +15,7 @@ const Project = require("../../models/Project")
  * @access  Private
  */
 
-router.get("/:slug/bugs", async (req, res) => {
+router.get("/:slug/bugs", auth, async (req, res) => {
     const project = await Project.findOne({ slug: req.params.slug })
     const bugs = await Bug.find({ project: project._id }).sort("status")
 
@@ -30,7 +32,7 @@ router.get("/:slug/bugs", async (req, res) => {
  * @access  Private
  */
 
-router.get("/openCount", async (req, res) => {
+router.get("/openCount", auth, async (req, res) => {
     const bugs = await Bug.find()
 
     const oc = {}
@@ -56,7 +58,7 @@ router.get("/openCount", async (req, res) => {
  * @access  Private
  */
 
-router.get("/:projectSlug/:bugSlug", async (req, res) => {
+router.get("/:projectSlug/:bugSlug", auth, async (req, res) => {
     const project = await Project.find({ slug: req.params.projectSlug })
     const bug = await Bug.findOne({
         project: project[0]._id,
@@ -76,7 +78,7 @@ router.get("/:projectSlug/:bugSlug", async (req, res) => {
  * @access  Private
  */
 
-router.delete("/:slug", async (req, res) => {
+router.delete("/:slug", auth, async (req, res) => {
     const bug = await Bug.findOneAndDelete({ slug: req.params.slug })
 
     bug
@@ -94,6 +96,7 @@ router.delete("/:slug", async (req, res) => {
 
 router.put(
     "/:slug",
+    auth,
     check("bug_name").custom(async (value, { req }) => {
         const bug = await Bug.findOne({
             slug: slugify(value.toLowerCase()),
@@ -142,7 +145,7 @@ router.put(
  * @access  Private
  */
 
-router.put("/:slug/status", async (req, res) => {
+router.put("/:slug/status", auth, async (req, res) => {
     const { status } = req.body
 
     const bug = await Bug.findOneAndUpdate(
@@ -168,6 +171,7 @@ router.put("/:slug/status", async (req, res) => {
 
 router.put(
     "/:slug/newcomment",
+    auth,
     check("comment", "Please include a valid comment").notEmpty(),
     async (req, res) => {
         const errors = validationResult(req)
@@ -200,7 +204,7 @@ router.put(
  * @access  Private
  */
 
-router.put("/:slug/:commentid/delete", async (req, res) => {
+router.put("/:slug/:commentid/delete", auth, async (req, res) => {
     const bug = await Bug.findOneAndUpdate(
         { slug: req.params.slug },
         { $pull: { comments: { _id: req.params.commentid } } }
@@ -221,6 +225,7 @@ router.put("/:slug/:commentid/delete", async (req, res) => {
 
 router.post(
     "/new",
+    auth,
     check("bug_name").custom(async (value, { req }) => {
         const bug = await Bug.findOne({
             slug: slugify(value.toLowerCase()),

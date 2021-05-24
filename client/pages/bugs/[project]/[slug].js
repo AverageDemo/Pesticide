@@ -3,19 +3,15 @@ import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify"
 import Link from "next/link"
 import moment from "moment"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/router"
 import { XIcon } from "@heroicons/react/solid"
 import { isAuthenticated } from "@/helpers/index"
 import { API_URL } from "@/config/index"
 import Layout from "@/components/Layout"
 
-export default function BugPage({ bug, projectObj }) {
+export default function BugPage({ bug, projectObj, token }) {
     const router = useRouter()
-
-    useEffect(() => {
-        bug.errors && router.push(`/projects/${projectObj.slug}`)
-    })
 
     const statusOptions = {
         Inactive: "bg-gray-300",
@@ -40,6 +36,7 @@ export default function BugPage({ bug, projectObj }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
         })
 
@@ -57,6 +54,7 @@ export default function BugPage({ bug, projectObj }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(values),
         })
@@ -81,6 +79,9 @@ export default function BugPage({ bug, projectObj }) {
         if (confirm("Are you sure?")) {
             const res = await fetch(`${API_URL}/bugs/${bug.slug}`, {
                 method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
 
             const data = await res.json()
@@ -96,6 +97,7 @@ export default function BugPage({ bug, projectObj }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ status: 1 }),
         })
@@ -112,6 +114,7 @@ export default function BugPage({ bug, projectObj }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ status: 2 }),
         })
@@ -362,9 +365,9 @@ export default function BugPage({ bug, projectObj }) {
 }
 
 export async function getServerSideProps({ params: { slug, project }, req }) {
-    const auth = await isAuthenticated(req)
+    const token = await isAuthenticated(req)
 
-    if (!auth.ok) {
+    if (!token) {
         return {
             redirect: {
                 destination: "/account/login",
@@ -373,15 +376,39 @@ export async function getServerSideProps({ params: { slug, project }, req }) {
         }
     }
 
-    const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`)
+    const projectRes = await fetch(`${API_URL}/projects/${project}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    const projectData = await projectRes.json()
+
+    if (!projectRes.ok) {
+        return {
+            redirect: {
+                destination: "/projects",
+                permanent: false,
+            },
+        }
+    }
+
+    const bugRes = await fetch(`${API_URL}/bugs/${project}/${slug}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
     const bug = await bugRes.json()
 
-    const projectRes = await fetch(`${API_URL}/projects/${project}`)
-    const projectData = await projectRes.json()
+    if (!bugRes.ok) {
+        return {
+            redirect: {
+                destination: "/projects",
+                permanent: false,
+            },
+        }
+    }
 
     const projectObj = !projectData.error && projectData[0]
 
     return {
-        props: { bug, projectObj },
+        props: { bug, projectObj, token },
     }
 }
