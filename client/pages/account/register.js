@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { ToastContainer, toast } from "react-toastify"
 
 import Link from "next/link"
-import { useState, useEffect, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { LockClosedIcon } from "@heroicons/react/solid"
 import { isAuthenticated } from "@/helpers/index"
 import AuthContext from "@/context/AuthContext"

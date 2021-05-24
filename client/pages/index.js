@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import AuthContext from "@/context/AuthContext"
 import { isAuthenticated } from "@/helpers/index"
+import AuthContext from "@/context/AuthContext"
 import Layout from "@/components/Layout"
 
 export default function DashboardPage() {

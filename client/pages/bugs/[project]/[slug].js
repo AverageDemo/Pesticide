@@ -8,8 +8,8 @@ import { useRouter } from "next/router"
 import { useState, useContext } from "react"
 import { XIcon } from "@heroicons/react/solid"
 import { API_URL } from "@/config/index"
-import AuthContext from "@/context/AuthContext"
 import { isAuthenticated } from "@/helpers/index"
+import AuthContext from "@/context/AuthContext"
 import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj, token }) {
