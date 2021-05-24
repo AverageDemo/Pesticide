@@ -4,6 +4,7 @@ const { check, validationResult } = require("express-validator")
 const { default: slugify } = require("slugify")
 
 const auth = require("../../middleware/auth")
+
 const Project = require("../../models/Project")
 
 /*
