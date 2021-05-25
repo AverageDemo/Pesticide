@@ -141,7 +141,9 @@ export default function BugTable({ bugArray, project, user }) {
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                User
+                                                {bug.assigned
+                                                    ? bug.assigned.name
+                                                    : "Not Assigned"}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {moment(bug.date).format(

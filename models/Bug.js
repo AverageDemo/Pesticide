@@ -39,6 +39,10 @@ const BugSchema = new mongoose.Schema({
         default: 0,
         // 0 - Inactive / 1 - Active / 2 - Review / 3 - Resolved
     },
+    assigned: {
+        type: Schema.Types.ObjectId,
+        ref: "user",
+    },
     project: {
         type: Schema.Types.ObjectId,
         ref: "projects",

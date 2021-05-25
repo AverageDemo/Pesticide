@@ -13,7 +13,7 @@ import AuthContext from "@/context/AuthContext"
 import SelectUser from "@/components/SelectUser"
 import Layout from "@/components/Layout"
 
-export default function BugPage({ bug, projectObj, token }) {
+export default function BugPage({ bug, projectObj, token, people }) {
     const router = useRouter()
     const { user } = useContext(AuthContext)
     const [comment, setComment] = useState()
@@ -218,7 +218,9 @@ export default function BugPage({ bug, projectObj, token }) {
                                 Assigned to
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                User
+                                {bug.assigned
+                                    ? bug.assigned.name
+                                    : "Not Assigned"}
                             </dd>
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -279,7 +281,11 @@ export default function BugPage({ bug, projectObj, token }) {
                                     // <button className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                     //     Assign to user
                                     // </button>
-                                    <SelectUser />
+                                    <SelectUser
+                                        bug={bug}
+                                        token={token}
+                                        people={people}
+                                    />
                                 ) : bug.status === 1 ? (
                                     <button
                                         onClick={handleReviewBtn}
@@ -425,7 +431,13 @@ export async function getServerSideProps({ params: { slug, project }, req }) {
 
     const projectObj = !projectData.error && projectData[0]
 
+    const userRes = await fetch(`${API_URL}/users`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+    })
+    const people = await userRes.json()
+
     return {
-        props: { bug, projectObj, token },
+        props: { bug, projectObj, token, people },
     }
 }

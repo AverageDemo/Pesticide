@@ -5,7 +5,19 @@ const gravatar = require("gravatar")
 const normalize = require("normalize-url")
 const { check, validationResult, header } = require("express-validator")
 
+const auth = require("../../middleware/auth")
 const User = require("../../models/User")
+
+/*
+ * @route   GET api/users
+ * @desc    Get users for populating lists
+ * @access  Private
+ */
+router.get("/", auth, async (req, res) => {
+    const users = await User.find().select(["id", "name", "avatar"])
+
+    res.json(users)
+})
 
 /*
  * @route   POST api/users

@@ -17,7 +17,9 @@ const Project = require("../../models/Project")
  */
 router.get("/:slug/bugs", auth, async (req, res) => {
     const project = await Project.findOne({ slug: req.params.slug })
-    const bugs = await Bug.find({ project: project._id }).sort("status")
+    const bugs = await Bug.find({ project: project._id })
+        .sort("status")
+        .populate("assigned", ["name"])
 
     bugs
         ? res.json(bugs)
@@ -64,6 +66,7 @@ router.get("/:projectSlug/:bugSlug", auth, async (req, res) => {
     })
         .populate("comments.author", ["name"])
         .populate("author", ["name"])
+        .populate("assigned", ["name"])
 
     bug
         ? res.json(bug)
@@ -164,6 +167,33 @@ router.put(
         }
     }
 )
+
+/*
+ * @route   PUT api/bugs/:slug/assign
+ * @desc    Update bug status
+ * @access  Private
+ */
+router.put("/:slug/assign", auth, async (req, res) => {
+    const user = await userInfo(req.user)
+
+    if (user.role > 1) {
+        const { assigned } = req.body
+
+        await Bug.findOneAndUpdate(
+            { slug: req.params.slug },
+            {
+                assigned: assigned.id,
+            },
+            { new: true }
+        )
+
+        res.json({ msg: "Success" })
+    } else {
+        res.status(403).json({
+            errors: [{ msg: "You are not authorized to update this bug" }],
+        })
+    }
+})
 
 /*
  * @route   PUT api/bugs/:bugId/status
