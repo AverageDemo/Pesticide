@@ -20,10 +20,10 @@ config/default.json
 
 -   [ ] Dashboard
 -   [x] Authentication
+-   -   [ ] User profile
 -   -   [x] Change auth middleware to accept from nextjs
 -   -   [x] Access limiting to projects
 -   -   [x] Access limiting to bugs
--   -   [ ] User profile
 -   -   [x] Assigning users to bugs
 -   -   -   [x] Populate button with real data
 -   -   [x] Bug comments (though I need to add the logged in user as author)
