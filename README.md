@@ -39,10 +39,10 @@ config/default.json
 -   [x] Bug review status & re-opening
 -   [x] Viewing a bugs details
 -   [x] Rerouting on invalid pages
+-   [x] Breadcrumb enhancement
 -   [ ] Add section to add solution (optional input since this could be done via VCS)
 -   [ ] Fix bg color of cells on view bug card (reproduction, stack trace, and actions)
 -   [ ] Add pretty confirmation to delete bug button (a modal)
--   [x] Breadcrumb enhancement
 -   [ ] Clean-up and optimize code and routes
 -   [ ] Admin panel
 
