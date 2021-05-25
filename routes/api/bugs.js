@@ -179,13 +179,15 @@ router.put("/:slug/assign", auth, async (req, res) => {
     if (user.role > 1) {
         const { assigned } = req.body
 
-        await Bug.findOneAndUpdate(
+        const bug = await Bug.findOneAndUpdate(
             { slug: req.params.slug },
             {
-                assigned: assigned.id,
+                assigned: assigned._id,
             },
             { new: true }
         )
+
+        console.log(bug)
 
         res.json({ msg: "Success" })
     } else {
@@ -320,6 +322,7 @@ router.post(
                 reproduction,
                 stackTrace,
                 project,
+                assigned: null,
                 author: req.user.id,
                 slug: slugify(bug_name.toLowerCase()),
             })
@@ -332,6 +335,7 @@ router.post(
                     errors: [{ msg: "A bug with this title already exists" }],
                 })
             } else {
+                console.log(e)
                 res.status(500).json({
                     errors: [{ msg: "Server error" }],
                 })

@@ -31,6 +31,11 @@ module.exports = function (req, res, next) {
                 })
             } else {
                 const user = await userInfo(decoded.user)
+                if (!user) {
+                    return res.status(403).json({
+                        errors: [{ msg: "Unauthorized" }],
+                    })
+                }
                 if (user.role > 0) {
                     req.user = decoded.user
                     next()
