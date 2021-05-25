@@ -187,8 +187,6 @@ router.put("/:slug/assign", auth, async (req, res) => {
             { new: true }
         )
 
-        console.log(bug)
-
         res.json({ msg: "Success" })
     } else {
         res.status(403).json({
@@ -335,7 +333,6 @@ router.post(
                     errors: [{ msg: "A bug with this title already exists" }],
                 })
             } else {
-                console.log(e)
                 res.status(500).json({
                     errors: [{ msg: "Server error" }],
                 })
