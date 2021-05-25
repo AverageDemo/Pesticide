@@ -10,6 +10,7 @@ import { XIcon } from "@heroicons/react/solid"
 import { API_URL } from "@/config/index"
 import { isAuthenticated } from "@/helpers/index"
 import AuthContext from "@/context/AuthContext"
+import SelectUser from "@/components/SelectUser"
 import Layout from "@/components/Layout"
 
 export default function BugPage({ bug, projectObj, token }) {
@@ -251,15 +252,19 @@ export default function BugPage({ bug, projectObj, token }) {
                     </dl>
                     {user && (
                         <div className="px-4 py-3 bg-white flex justify-between sm:px-6 border-t border-gray-100">
-                            {user._id === bug.author._id && (
-                                <Link
-                                    href={`/bugs/${projectObj.slug}/${bug.slug}/edit`}
-                                >
-                                    <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                        Edit
-                                    </button>
-                                </Link>
-                            )}
+                            <div>
+                                {user._id === bug.author._id ? (
+                                    <Link
+                                        href={`/bugs/${projectObj.slug}/${bug.slug}/edit`}
+                                    >
+                                        <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                            Edit
+                                        </button>
+                                    </Link>
+                                ) : (
+                                    <div></div>
+                                )}
+                            </div>
                             <div>
                                 {(user.role > 1 ||
                                     user._id === bug.author._id) && (
@@ -271,9 +276,10 @@ export default function BugPage({ bug, projectObj, token }) {
                                     </button>
                                 )}
                                 {bug.status === 0 && user.role > 1 ? (
-                                    <button className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                        Assign to user
-                                    </button>
+                                    // <button className="inline-flex justify-center ml-2 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                    //     Assign to user
+                                    // </button>
+                                    <SelectUser />
                                 ) : bug.status === 1 ? (
                                     <button
                                         onClick={handleReviewBtn}

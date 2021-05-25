@@ -25,7 +25,7 @@ config/default.json
 -   -   [x] Access limiting to bugs
 -   -   [ ] User profile
 -   -   [ ] Assigning users to bugs
--   -   [ ] Assigning users to projects
+-   -   -   [ ] Populate button with real data
 -   -   [x] Bug comments (though I need to add the logged in user as author)
 -   -   [x] User roles
 -   -   [x] Bug delete button should only be viewable by a higher role and author (admin, lead dev, etc)
