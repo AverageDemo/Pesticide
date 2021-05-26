@@ -1,43 +1,43 @@
-import Head from "next/head"
-import Header from "./Header"
-import { useRouter } from "next/router"
+import Head from "next/head";
+import Header from "./Header";
+import { useRouter } from "next/router";
 
 export default function Layout({
-    title,
-    page,
-    keywords,
-    description,
-    children,
-    breadcrumb,
+  title,
+  page,
+  keywords,
+  description,
+  children,
+  breadcrumb,
 }) {
-    const router = useRouter()
+  const router = useRouter();
 
-    return (
-        <div>
-            <Head>
-                <title>
-                    {title}
-                    {page}
-                </title>
-                <meta name="description" content={description} />
-                <meta name="keywords" content={keywords} />
-            </Head>
+  return (
+    <div>
+      <Head>
+        <title>
+          {title}
+          {page}
+        </title>
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+      </Head>
 
-            <Header breadcrumb={breadcrumb} />
+      <Header breadcrumb={breadcrumb} />
 
-            <main>
-                <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                    <div className="px-4 py-6 sm:px-0">{children}</div>
-                </div>
-            </main>
+      <main>
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="px-4 py-6 sm:px-0">{children}</div>
         </div>
-    )
+      </main>
+    </div>
+  );
 }
 
 Layout.defaultProps = {
-    title: "Pesticide | ",
-    page: "Home",
-    description: "Bugtracking software",
-    keywords: "bugtrack",
-    breadcrumb: "Breadcrumb",
-}
+  title: "Pesticide | ",
+  page: "Home",
+  description: "Bugtracking software",
+  keywords: "bugtrack",
+  breadcrumb: "Breadcrumb",
+};

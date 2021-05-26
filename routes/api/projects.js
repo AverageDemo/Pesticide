@@ -1,12 +1,12 @@
-const express = require("express")
-const router = express.Router()
-const { check, validationResult } = require("express-validator")
-const { default: slugify } = require("slugify")
+const express = require("express");
+const router = express.Router();
+const { check, validationResult } = require("express-validator");
+const { default: slugify } = require("slugify");
 
-const userInfo = require("../../helpers/userInfo")
-const auth = require("../../middleware/auth")
+const userInfo = require("../../helpers/userInfo");
+const auth = require("../../middleware/auth");
 
-const Project = require("../../models/Project")
+const Project = require("../../models/Project");
 
 /*
  * @route   GET api/projects
@@ -14,12 +14,12 @@ const Project = require("../../models/Project")
  * @access  Private
  */
 router.get("/", auth, async (req, res) => {
-    const projects = await Project.find().sort("-date")
+  const projects = await Project.find().sort("-date");
 
-    projects.length > 0
-        ? res.json(projects)
-        : res.status(404).json({ error: "No projects found" })
-})
+  projects.length > 0
+    ? res.json(projects)
+    : res.status(404).json({ error: "No projects found" });
+});
 
 /*
  * @route   GET api/projects/:slug
@@ -27,12 +27,12 @@ router.get("/", auth, async (req, res) => {
  * @access  Private
  */
 router.get("/:slug", auth, async (req, res) => {
-    const project = await Project.find({ slug: req.params.slug })
+  const project = await Project.find({ slug: req.params.slug });
 
-    project.length > 0
-        ? res.json(project)
-        : res.status(404).json({ error: "No project found" })
-})
+  project.length > 0
+    ? res.json(project)
+    : res.status(404).json({ error: "No project found" });
+});
 
 /*
  * @route   PUT api/projects/:slug
@@ -40,79 +40,75 @@ router.get("/:slug", auth, async (req, res) => {
  * @access  Private
  */
 router.put(
-    "/:slug",
-    auth,
-    check("project_name").custom(async (value, { req }) => {
-        const project = await Project.findOne({
-            slug: slugify(value.toLowerCase()),
-        })
+  "/:slug",
+  auth,
+  check("project_name").custom(async (value, { req }) => {
+    const project = await Project.findOne({
+      slug: slugify(value.toLowerCase()),
+    });
 
-        if (project && project.slug !== req.params.slug) {
-            throw new Error("A project with the same title already exists")
-        }
-
-        return true
-    }),
-    check("project_name", "Name requires a minimum of 6 characters").isLength({
-        min: 6,
-    }),
-    check("about", "Please include a valid description").notEmpty(),
-    async (req, res) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() })
-        }
-
-        const user = await userInfo(req.user)
-
-        const projectC = await Project.findOne({ slug: req.params.slug })
-
-        if (!projectC) {
-            res.status(404).json({
-                errors: [{ msg: "No project found" }],
-            })
-        }
-
-        if (user.role > 1 || String(user._id) === String(projectC.author)) {
-            const { project_name, about } = req.body
-            try {
-                const project = await Project.findOneAndUpdate(
-                    { slug: req.params.slug },
-                    {
-                        name: project_name,
-                        description: about,
-                        slug: slugify(project_name.toLowerCase()),
-                    },
-                    { new: true }
-                )
-
-                project
-                    ? res.json(project)
-                    : res
-                          .status(404)
-                          .json({ errors: [{ msg: "Project already exists" }] })
-            } catch (e) {
-                if (e.code === 11000) {
-                    res.status(500).json({
-                        errors: [
-                            { msg: "A project with this title already exists" },
-                        ],
-                    })
-                } else {
-                    res.status(500).json({
-                        errors: [{ msg: "Server error" }],
-                    })
-                }
-            }
-        } else {
-            res.status(403).json({
-                errors: [
-                    { msg: "You are not authorized to edit this project" },
-                ],
-            })
-        }
+    if (project && project.slug !== req.params.slug) {
+      throw new Error("A project with the same title already exists");
     }
-)
+
+    return true;
+  }),
+  check("project_name", "Name requires a minimum of 6 characters").isLength({
+    min: 6,
+  }),
+  check("about", "Please include a valid description").notEmpty(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const user = await userInfo(req.user);
+
+    const projectC = await Project.findOne({ slug: req.params.slug });
+
+    if (!projectC) {
+      res.status(404).json({
+        errors: [{ msg: "No project found" }],
+      });
+    }
+
+    if (user.role > 1 || String(user._id) === String(projectC.author)) {
+      const { project_name, about } = req.body;
+      try {
+        const project = await Project.findOneAndUpdate(
+          { slug: req.params.slug },
+          {
+            name: project_name,
+            description: about,
+            slug: slugify(project_name.toLowerCase()),
+          },
+          { new: true }
+        );
+
+        project
+          ? res.json(project)
+          : res
+              .status(404)
+              .json({ errors: [{ msg: "Project already exists" }] });
+      } catch (e) {
+        if (e.code === 11000) {
+          res.status(500).json({
+            errors: [{ msg: "A project with this title already exists" }],
+          });
+        } else {
+          res.status(500).json({
+            errors: [{ msg: "Server error" }],
+          });
+        }
+      }
+    } else {
+      res.status(403).json({
+        errors: [{ msg: "You are not authorized to edit this project" }],
+      });
+    }
+  }
+);
 
 /*
  * @route   POST api/projects/new
@@ -121,47 +117,47 @@ router.put(
  */
 
 router.post(
-    "/new",
-    auth,
-    check("project_name").custom(async (value, { req }) => {
-        const project = await Project.findOne({
-            slug: slugify(value.toLowerCase()),
-        })
+  "/new",
+  auth,
+  check("project_name").custom(async (value, { req }) => {
+    const project = await Project.findOne({
+      slug: slugify(value.toLowerCase()),
+    });
 
-        if (project) {
-            throw new Error("A project with the same title already exists")
-        }
-
-        return true
-    }),
-    check("project_name", "Name requires a minimum of 6 characters").isLength({
-        min: 6,
-    }),
-    check("about", "Please include a valid description").notEmpty(),
-    async (req, res) => {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() })
-        }
-
-        const { project_name, about } = req.body
-
-        try {
-            const newProject = new Project({
-                name: project_name,
-                description: about,
-                slug: slugify(project_name.toLowerCase()),
-                author: req.user.id,
-            })
-
-            await newProject.save()
-            res.json(newProject)
-        } catch (e) {
-            res.status(500).json({
-                errors: [{ msg: "Server error" }],
-            })
-        }
+    if (project) {
+      throw new Error("A project with the same title already exists");
     }
-)
 
-module.exports = router
+    return true;
+  }),
+  check("project_name", "Name requires a minimum of 6 characters").isLength({
+    min: 6,
+  }),
+  check("about", "Please include a valid description").notEmpty(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { project_name, about } = req.body;
+
+    try {
+      const newProject = new Project({
+        name: project_name,
+        description: about,
+        slug: slugify(project_name.toLowerCase()),
+        author: req.user.id,
+      });
+
+      await newProject.save();
+      res.json(newProject);
+    } catch (e) {
+      res.status(500).json({
+        errors: [{ msg: "Server error" }],
+      });
+    }
+  }
+);
+
+module.exports = router;
