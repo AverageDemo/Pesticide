@@ -1,6 +1,6 @@
 {
   "name": "pesticide",
-  "version": "1.0.0",
+  "version": "0.2.3-beta",
   "description": "Bugtracking software",
   "main": "server.js",
   "scripts": {
