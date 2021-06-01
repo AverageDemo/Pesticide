@@ -84,7 +84,7 @@ router.post(
           },
         },
         config.get('jwtSecret'),
-        { expiresIn: '1 days' },
+        { expiresIn: '1 days', algorithm: 'HS256' },
         (err, jwt) => {
           if (err) throw err;
           res.json({ jwt, user: userObj });
